@@ -7,18 +7,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Changa:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0a0a0f;--surface:#12121a;--surface-2:#18181f;--ink:#f5f5f5;--muted:#a0a0b0;--border:#252530;--cola:#e60012;--cola-glow:#ff1a2b;--doritos:#f39200;--doritos-glow:#ffad33;--gold:#ffc107;--wa:#25d366;--wa-glow:#4be383;--radius:20px}
+[data-theme="light"]{--bg:#f5f5f7;--surface:#ffffff;--surface-2:#f0f0f3;--ink:#1a1a2e;--muted:#6b6b80;--border:#e0e0e8;--cola:#e60012;--cola-glow:#ff1a2b;--doritos:#f39200;--doritos-glow:#ffad33;--gold:#ffc107;--wa:#25d366;--wa-glow:#4be383}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:'Cairo',system-ui,sans-serif;overflow-x:hidden;min-height:100vh}
+body{background:var(--bg);color:var(--ink);font-family:'Cairo',system-ui,sans-serif;overflow-x:hidden;min-height:100vh;transition:background .3s,color .3s}
 ::selection{background:var(--cola);color:#fff}
 
 /* NAV */
-nav{position:fixed;top:0;right:0;left:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 5vw;background:rgba(10,10,15,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+nav{position:fixed;top:0;right:0;left:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 5vw;background:rgba(10,10,15,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:background .3s}
+[data-theme="light"] nav{background:rgba(255,255,255,.95)}
 .logo{font-family:'Changa',sans-serif;font-weight:800;font-size:1.4rem;color:var(--wa);display:flex;align-items:center;gap:6px}
 .logo img{height:40px;width:auto}
-nav ul{display:flex;gap:24px;list-style:none;align-items:center}
+nav ul{display:flex;gap:16px;list-style:none;align-items:center}
 nav a{color:var(--muted);text-decoration:none;font-weight:600;font-size:.95rem;transition:color .2s}
 nav a:hover{color:var(--ink)}
+
+/* NAV BUTTONS */
+.nav-btns{display:flex;gap:10px;align-items:center}
+.theme-toggle{width:40px;height:40px;border-radius:10px;border:1px solid var(--border);background:var(--surface-2);color:var(--ink);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.theme-toggle:hover{border-color:var(--gold);color:var(--gold)}
 
 /* CART BUTTON */
 .cart-btn{position:relative;display:flex;align-items:center;gap:10px;padding:14px 26px;border:2px solid var(--wa);border-radius:14px;background:rgba(37,211,102,.12);color:var(--wa);font-family:'Cairo',sans-serif;font-weight:700;font-size:1.05rem;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(37,211,102,.25);animation:cartPulse 2.5s ease-in-out infinite}
@@ -46,6 +53,13 @@ h1 .brand-alt{background:linear-gradient(135deg,var(--doritos),var(--doritos-glo
 .marquee-track span{margin:0 28px;display:inline-flex;align-items:center;gap:8px}
 @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
+/* SEARCH */
+.search-section{padding:30px 5vw 0;display:flex;justify-content:center}
+.search-box{position:relative;width:100%;max-width:600px}
+.search-box input{width:100%;padding:16px 50px 16px 20px;border:2px solid var(--border);border-radius:14px;background:var(--surface);color:var(--ink);font-family:'Cairo',sans-serif;font-size:1rem;transition:border-color .2s}
+.search-box input:focus{outline:none;border-color:var(--wa);box-shadow:0 0 0 3px rgba(37,211,102,.1)}
+.search-box button{position:absolute;left:8px;top:50%;transform:translateY(-50%);background:var(--wa);border:none;border-radius:10px;padding:8px 14px;color:#000;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
 /* SECTIONS */
 section{padding:80px 5vw}
 .section-head{max-width:1100px;margin:0 auto 48px;text-align:center}
@@ -57,6 +71,11 @@ section{padding:80px 5vw}
 .cat-btn{padding:10px 20px;border:1px solid var(--border);border-radius:100px;background:var(--surface);color:var(--ink);font-family:'Cairo',sans-serif;font-weight:600;font-size:.9rem;cursor:pointer;transition:all .2s}
 .cat-btn:hover,.cat-btn.active{background:var(--wa);border-color:var(--wa);color:#000}
 
+/* SORT */
+.sort-section{display:flex;justify-content:center;gap:10px;margin-bottom:24px;flex-wrap:wrap}
+.sort-btn{padding:8px 16px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--muted);font-family:'Cairo',sans-serif;font-size:.82rem;cursor:pointer;transition:all .2s}
+.sort-btn:hover,.sort-btn.active{border-color:var(--gold);color:var(--gold)}
+
 /* PRODUCTS GRID */
 .grid{max-width:1200px;margin:0 auto;display:grid;gap:24px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
@@ -66,12 +85,18 @@ section{padding:80px 5vw}
 .emoji-icon{font-size:4.5rem;display:block;line-height:1;z-index:1;transition:transform .35s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 8px 24px rgba(0,0,0,.5))}
 .card:hover .emoji-icon{transform:scale(1.15) rotate(-5deg)}
 .badge{position:absolute;top:14px;right:14px;z-index:3;background:var(--gold);color:#1a1205;font-size:.75rem;font-weight:800;padding:5px 14px;border-radius:100px;letter-spacing:.3px}
+.badge.new{background:var(--wa)}
+.badge.sale{background:var(--cola);color:#fff}
+.badge.hot{background:#ff4444;color:#fff}
 .card-body{padding:18px;display:flex;flex-direction:column;gap:8px;flex:1}
 .card-body h3{font-size:1.05rem;font-weight:800;line-height:1.4}
 .card-body .desc{color:var(--muted);font-size:.82rem;line-height:1.6;flex:1}
+.stars{display:flex;gap:2px;margin-bottom:4px;color:var(--gold);font-size:.85rem}
+.stars span{color:var(--muted);font-size:.75rem;margin-right:4px}
 .card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding-top:10px;border-top:1px solid var(--border)}
 .price{font-family:'Changa',sans-serif;font-weight:800;font-size:1.3rem;color:var(--gold)}
 .price small{font-size:.7rem;color:var(--muted);font-family:'Cairo',sans-serif;font-weight:600}
+.price .original{text-decoration:line-through;color:var(--muted);font-size:.85rem;margin-right:6px}
 .qty-control{display:flex;align-items:center;gap:6px}
 .qty-btn{width:34px;height:34px;border-radius:10px;border:1px solid var(--border);background:var(--surface-2);color:var(--ink);font-weight:800;cursor:pointer;font-size:1.1rem;transition:all .15s;display:flex;align-items:center;justify-content:center}
 .qty-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(255,193,7,.08)}
@@ -103,6 +128,19 @@ section{padding:80px 5vw}
 .checkout-btn{width:100%;padding:16px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--wa),#1da851);color:#fff;font-family:'Cairo',sans-serif;font-weight:800;font-size:1.1rem;cursor:pointer;transition:transform .15s;box-shadow:0 6px 20px rgba(37,211,102,.25)}
 .checkout-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,211,102,.4)}
 .checkout-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.clear-cart-btn{width:100%;padding:10px;border:1px solid var(--border);border-radius:10px;background:transparent;color:var(--muted);font-family:'Cairo',sans-serif;font-weight:600;font-size:.85rem;cursor:pointer;transition:all .2s}
+.clear-cart-btn:hover{border-color:var(--cola);color:var(--cola)}
+
+/* COUPON */
+.coupon-box{display:flex;gap:8px;margin-top:10px}
+.coupon-box input{flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2);color:var(--ink);font-family:'Cairo',sans-serif;font-size:.9rem}
+.coupon-box input:focus{outline:none;border-color:var(--wa)}
+.coupon-box button{padding:10px 16px;border:none;border-radius:10px;background:var(--gold);color:#1a1205;font-family:'Cairo',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;transition:all .15s}
+.coupon-box button:hover{opacity:.85}
+.coupon-status{margin-top:6px;font-size:.82rem}
+.coupon-status.success{color:var(--wa)}
+.coupon-status.error{color:#ff5555}
+.discount-row{display:flex;justify-content:space-between;color:var(--wa);font-weight:700}
 
 /* TOAST */
 .toast-veil{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:400;opacity:0;pointer-events:none;transition:opacity .25s;display:flex;align-items:center;justify-content:center}
@@ -118,6 +156,8 @@ section{padding:80px 5vw}
 .toast-view:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(37,211,102,.3)}
 .toast-close{background:var(--surface-2);border:1px solid var(--border);color:var(--ink)}
 .toast-close:hover{border-color:var(--muted)}
+
+/* FORM */
 .form-section{background:var(--surface);border-top:1px solid var(--border)}
 .form-grid{max-width:700px;margin:0 auto;display:grid;gap:20px}
 .field{display:flex;flex-direction:column;gap:8px}
@@ -140,22 +180,49 @@ section{padding:80px 5vw}
 .summary-row{display:flex;justify-content:space-between;align-items:center;font-size:.95rem}
 .summary-row.total{font-weight:800;font-size:1.25rem;color:var(--gold);border-top:2px solid var(--border);padding-top:14px;margin-top:6px}
 .total-value{font-family:'Changa',sans-serif;font-size:1.6rem}
+
+/* SHARE BUTTONS */
+.share-section{display:flex;gap:10px;justify-content:center;margin-top:20px}
+.share-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:10px;font-family:'Cairo',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;transition:all .15s;border:none}
+.share-btn.wa{background:#25d366;color:#000}
+.share-btn.wa:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(37,211,102,.3)}
+.share-btn.copy{background:var(--surface-2);border:1px solid var(--border);color:var(--ink)}
+.share-btn.copy:hover{border-color:var(--wa);color:var(--wa)}
+
+/* LOYALTY */
+.loyalty-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;background:rgba(255,193,7,.12);border:1px solid rgba(255,193,7,.3);color:var(--gold);font-size:.82rem;font-weight:700;margin-top:12px}
+
+/* FOOTER */
 footer{padding:50px 5vw 40px;text-align:center;color:var(--muted);border-top:1px solid var(--border)}
 footer .f-logo{font-family:'Changa',sans-serif;font-weight:800;font-size:1.3rem;color:var(--ink);margin-bottom:14px}
 footer .f-logo img{height:36px;width:auto;margin-bottom:6px}
 footer p{font-size:.9rem;line-height:2}
 footer .fine{font-size:.78rem;opacity:.5;margin-top:18px}
 
+/* ORDER CONFIRMATION */
+.confirm-veil{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+.confirm-veil.open{display:flex}
+.confirm-box{background:var(--surface);border:1px solid var(--wa);border-radius:var(--radius);padding:40px;text-align:center;max-width:400px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.confirm-box .big-icon{font-size:4rem;display:block;margin-bottom:16px}
+.confirm-box h2{font-size:1.5rem;font-weight:900;color:var(--wa);margin-bottom:8px}
+.confirm-box p{color:var(--muted);margin-bottom:20px;line-height:1.7}
+.confirm-box .order-id{background:var(--surface-2);padding:10px 18px;border-radius:10px;font-weight:700;font-size:1.1rem;color:var(--ink);display:inline-block;margin-bottom:20px}
+
 @media(max-width:720px){
-  nav ul{display:none}
+  nav ul{gap:10px}
+  .nav-btns{gap:8px}
+  .theme-toggle{width:34px;height:34px;font-size:1rem}
+  .cart-btn{padding:10px 18px;font-size:.95rem}
   .emoji-icon{font-size:3.5rem}
   .card-img{height:160px}
   .categories{gap:8px}
   .cat-btn{padding:8px 16px;font-size:.82rem}
+  .search-section{padding:20px 4vw 0}
 }
 @media(max-width:420px){
   section{padding:60px 4vw}
   .grid{grid-template-columns:1fr}
+  .coupon-box{flex-direction:column}
 }
 </style>
 </head>
@@ -172,8 +239,15 @@ footer .fine{font-size:.78rem;opacity:.5;margin-top:18px}
     <div class="cart-empty"><span class="big">🛒</span>سلتك فارغة<br>أضف بعض المنتجات!</div>
   </div>
   <div class="cart-footer">
+    <div class="coupon-box">
+      <input type="text" id="couponInput" placeholder="كود الخصم">
+      <button onclick="applyCoupon()">تطبيق</button>
+    </div>
+    <div class="coupon-status" id="couponStatus"></div>
+    <div class="discount-row" id="discountRow" style="display:none"><span>الخصم</span><span id="discountAmt">0 ل.س</span></div>
     <div class="cart-total"><span>المجموع</span><span class="val" id="cartTotal">0 ل.س</span></div>
     <button class="checkout-btn" id="cartCheckoutBtn" disabled onclick="goToCheckout()">إتمام الطلب →</button>
+    <button class="clear-cart-btn" id="clearCartBtn" disabled onclick="clearCart()">🗑️ مسح السلة</button>
   </div>
 </div>
 
@@ -190,13 +264,31 @@ footer .fine{font-size:.78rem;opacity:.5;margin-top:18px}
   </div>
 </div>
 
+<!-- ORDER CONFIRMATION -->
+<div class="confirm-veil" id="confirmVeil">
+  <div class="confirm-box">
+    <span class="big-icon">✅</span>
+    <h2>تم إرسال طلبك!</h2>
+    <p>شكراً لك! سيتم التواصل معك قريباً لتأكيد الطلب.</p>
+    <div class="order-id" id="orderIdDisplay"></div>
+    <div class="share-section">
+      <button class="share-btn wa" onclick="shareWhatsapp()">📤 مشاركة</button>
+      <button class="share-btn copy" onclick="copyLink()">📋 نسخ الرابط</button>
+    </div>
+    <button class="toast-close" style="margin-top:16px" onclick="closeConfirm()">إغلاق</button>
+  </div>
+</div>
+
 <nav>
   <div class="logo">
     <img src="logo.svg" alt="شعار سوريا">
     <span>ماركت <span style="color:var(--gold)">البيرقدار</span></span>
   </div>
   <ul>
-    <li><button class="cart-btn" onclick="toggleCart(true)">🛒 السلة <span class="cart-count" id="cartCount">0</span></button></li>
+    <li class="nav-btns">
+      <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">🌙</button>
+      <button class="cart-btn" onclick="toggleCart(true)">🛒 السلة <span class="cart-count" id="cartCount">0</span></button>
+    </li>
   </ul>
 </nav>
 
@@ -205,6 +297,7 @@ footer .fine{font-size:.78rem;opacity:.5;margin-top:18px}
     <span class="kicker">توصيل مجاني للطلبات فوق 50,000 ل.س</span>
     <h1 class="logo-hero"><img src="logo.svg" alt="شعار سوريا"><br>ماركت <span class="brand-alt">البيرقدار</span></h1>
     <p class="sub">متجرك العربي — بقالة، مقبلات، حلويات، ومشروبات. اطلب الآن واستلم لباب بيتك.</p>
+    <div class="loyalty-badge">⭐ اكسب نقاط مع كل شراء</div>
   </div>
 </header>
 
@@ -215,7 +308,15 @@ footer .fine{font-size:.78rem;opacity:.5;margin-top:18px}
   </div>
 </div>
 
-<section id="order" style="padding-top:70px">
+<!-- SEARCH -->
+<div class="search-section">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="ابحث عن منتج..." oninput="searchProducts(this.value)">
+    <button onclick="searchProducts(document.getElementById('searchInput').value)">🔍</button>
+  </div>
+</div>
+
+<section id="order" style="padding-top:40px">
   <div class="section-head">
     <h2>🛒 اختر منتجاتك</h2>
     <p>جميع الأسعار بالليرة السورية 🇸🇾 — التوصيل لباب البيت</p>
@@ -229,6 +330,13 @@ footer .fine{font-size:.78rem;opacity:.5;margin-top:18px}
     <button class="cat-btn" data-cat="cheese">أجبان ولحوم</button>
     <button class="cat-btn" data-cat="spices">بهارات</button>
     <button class="cat-btn" data-cat="fruits">خضار وفواكه</button>
+  </div>
+  <div class="sort-section">
+    <button class="sort-btn active" data-sort="default">الافتراضي</button>
+    <button class="sort-btn" data-sort="price-low">السعر: من الأرخص</button>
+    <button class="sort-btn" data-sort="price-high">السعر: من الأغلى</button>
+    <button class="sort-btn" data-sort="rating">الأعلى تقييماً</button>
+    <button class="sort-btn" data-sort="popular">الأكثر شعبية</button>
   </div>
   <div class="grid" id="productsGrid"></div>
 </section>
@@ -253,6 +361,7 @@ footer .fine{font-size:.78rem;opacity:.5;margin-top:18px}
     </div>
     <div class="summary-box">
       <div class="summary-row"><span id="sumItems">المنتجات: 0</span><span id="sumTotal">0 ل.س</span></div>
+      <div class="discount-row" id="discountRow2" style="display:none"><span>الخصم</span><span id="discountAmt2">0 ل.س</span></div>
       <div class="summary-row total"><span>المجموع الكلي</span><span class="total-value" id="sumTotalBig">0 ل.س</span></div>
     </div>
     <button class="wa-btn" id="sendBtn" disabled onclick="sendOrder()">
@@ -269,96 +378,142 @@ footer .fine{font-size:.78rem;opacity:.5;margin-top:18px}
 </footer>
 
 <script>
+// ========== PRODUCTS DATABASE ==========
 const products = [
-  {id:'cola', cat:'drinks', name:'كوكاكولا كلاسيك', desc:'عبوة 12 علبة 330مل', price:85000, emoji:'🥤', badge:'الأكثر مبيعاً'},
-  {id:'zero', cat:'drinks', name:'كوكاكولا زيرو', desc:'بدون سكر، عبوة 12 علبة', price:85000, emoji:'🧊'},
-  {id:'7up', cat:'drinks', name:'7Up', desc:'علبة 330مل', price:15000, emoji:'🍋'},
-  {id:'fanta', cat:'drinks', name:'فانتا برتقال', desc:'علبة 330مل', price:15000, emoji:'🍊'},
-  {id:'sprite', cat:'drinks', name:'سبرايت', desc:'علبة 330مل', price:15000, emoji:'🥤'},
-  {id:'pepsi', cat:'drinks', name:'بيبسي', desc:'علبة 330مل', price:15000, emoji:'🥤'},
-  {id:'capri', cat:'drinks', name:'كابري سون كولا', desc:'10 علب 200مل', price:45000, emoji:'🧃'},
-  {id:'lipton', cat:'drinks', name:'ليبتون آيس تي خوخ', desc:'علبة 330مل', price:20000, emoji:'🍹'},
-  {id:'water', cat:'drinks', name:'مياه معدنية', desc:'عبوة 1.5 لتر', price:8000, emoji:'💧'},
-  {id:'juice', cat:'drinks', name:'عصير برتقال', desc:'عبوة 1 لتر', price:35000, emoji:'🍊'},
-  {id:'rice', cat:'grocery', name:'رز أبو كاس', desc:'5 كيلو — أرز بسمتي', price:45000, emoji:'🍚'},
-  {id:'bulgur', cat:'grocery', name:'برغل ناعم', desc:'1 كيلو غرام', price:12000, emoji:'🌾'},
-  {id:'lentil', cat:'grocery', name:'عدس أحمر', desc:'1 كيلو غرام', price:15000, emoji:'🫘'},
-  {id:'beans', cat:'grocery', name:'فاصولياء بيضاء', desc:'1 كيلو غرام', price:18000, emoji:'🫘'},
-  {id:'chickpeas', cat:'grocery', name:'حمص حب', desc:'1 كيلو غرام', price:14000, emoji:'🫘'},
-  {id:'flour', cat:'grocery', name:'طحين', desc:'2 كيلو غرام', price:12000, emoji:'🌾'},
-  {id:'sugar', cat:'grocery', name:'سكر', desc:'1 كيلو غرام', price:8000, emoji:'🍬'},
-  {id:'oil', cat:'grocery', name:'زيت دوار الشمس', desc:'1 لتر', price:45000, emoji:'🫒'},
-  {id:'oliveoil', cat:'grocery', name:'زيت زيتون', desc:'750 مل', price:65000, emoji:'🫒'},
-  {id:'pasta', cat:'grocery', name:'معكرونة', desc:'500 غرام', price:8000, emoji:'🍝'},
-  {id:'freek', cat:'grocery', name:'فريكة', desc:'1 كيلو غرام', price:22000, emoji:'🌾'},
-  {id:'vermicelli', cat:'grocery', name:'شعيرية', desc:'500 غرام', price:7000, emoji:'🍜'},
-  {id:'hummus', cat:'appetizers', name:'حمص بالطحينة', desc:'400 غرام', price:18000, emoji:'🫓'},
-  {id:'mutabbal', cat:'appetizers', name:'متبل بيروتي', desc:'400 غرام', price:16000, emoji:'🍆'},
-  {id:'baba', cat:'appetizers', name:'بابا غنوج', desc:'400 غرام', price:15000, emoji:'🍆'},
-  {id:'tabbouleh', cat:'appetizers', name:'تبولة', desc:'400 غرام', price:14000, emoji:'🥗'},
-  {id:'fattoush', cat:'appetizers', name:'سلطة فتوش', desc:'400 غرام', price:12000, emoji:'🥗'},
-  {id:'thyme', cat:'appetizers', name:'زعتر بلدي', desc:'250 غرام', price:10000, emoji:'🌿'},
-  {id:'makdous', cat:'appetizers', name:'مكدوس', desc:'500 غرام', price:35000, emoji:'🍆'},
-  {id:'yalanji', cat:'appetizers', name:'يالنجي', desc:'400 غرام', price:28000, emoji:'🥬'},
-  {id:'msabaha', cat:'appetizers', name:'مسبحة', desc:'400 غرام', price:16000, emoji:'🫓'},
-  {id:'foul', cat:'appetizers', name:'فول مدمس', desc:'400 غرام', price:10000, emoji:'🫘'},
-  {id:'halva', cat:'sweets', name:'حلاوة الجبن', desc:'500 غرام', price:45000, emoji:'🍯'},
-  {id:'baklava', cat:'sweets', name:'بقلاوة', desc:'500 غرام', price:55000, emoji:'🥮'},
-  {id:'kunafa', cat:'sweets', name:'كنافة', desc:'500 غرام', price:40000, emoji:'🍮'},
-  {id:'maamoul', cat:'sweets', name:'معتمر', desc:'500 غرام', price:35000, emoji:'🍪'},
-  {id:'dates', cat:'sweets', name:'تمر مجدول', desc:'1 كيلو غرام', price:60000, emoji:'🌴'},
-  {id:'honey', cat:'sweets', name:'عسل طبيعي', desc:'500 غرام', price:75000, emoji:'🍯'},
-  {id:'jam', cat:'sweets', name:'مربى فراولة', desc:'400 غرام', price:18000, emoji:'🍓'},
-  {id:'tahini', cat:'sweets', name:'طحينة', desc:'500 غرام', price:25000, emoji:'🥜'},
-  {id:'molasses', cat:'sweets', name:'دبس رمان', desc:'500 مل', price:22000, emoji:'🍇'},
-  {id:'pomegranate', cat:'sweets', name:'دبس فليفلة', desc:'650 غرام', price:20000, emoji:'🌶️'},
-  {id:'halloumi', cat:'cheese', name:'جبنة حلوم', desc:'500 غرام', price:55000, emoji:'🧀'},
-  {id:'shanklish', cat:'cheese', name:'جبنة شلل', desc:'500 غرام', price:45000, emoji:'🧀'},
-  {id:'baladi', cat:'cheese', name:'جبنة بلدية', desc:'500 غرام', price:35000, emoji:'🧀'},
-  {id:'labneh', cat:'cheese', name:'لبنة بقري', desc:'400 غرام', price:28000, emoji:'🥛'},
-  {id:'kashkaval', cat:'cheese', name:'جبنة قشقوان', desc:'500 غرام', price:60000, emoji:'🧀'},
-  {id:'mortadella', cat:'cheese', name:'مرتديلا', desc:'500 غرام', price:35000, emoji:'🥩'},
-  {id:'pastirma', cat:'cheese', name:'بسطرمة', desc:'300 غرام', price:75000, emoji:'🥩'},
-  {id:'sujuk', cat:'cheese', name:'سجق', desc:'500 غرام', price:45000, emoji:'🌭'},
-  {id:'lahmacun', cat:'cheese', name:'لحم بعجين', desc:'4 قطع', price:30000, emoji:'🥟'},
-  {id:'kibbeh', cat:'cheese', name:'كبة', desc:'500 غرام', price:40000, emoji:'🥟'},
-  {id:'zaatar', cat:'spices', name:'زعتر', desc:'250 غرام', price:12000, emoji:'🌿'},
-  {id:'cumin', cat:'spices', name:'كمون', desc:'250 غرام', price:10000, emoji:'🧂'},
-  {id:'paprika', cat:'spices', name:'بابريكا', desc:'250 غرام', price:12000, emoji:'🌶️'},
-  {id:'cinnamon', cat:'spices', name:'قرفة', desc:'250 غرام', price:15000, emoji:'🫚'},
-  {id:'blackpepper', cat:'spices', name:'فلفل أسود', desc:'250 غرام', price:14000, emoji:'🌶️'},
-  {id:'sumac', cat:'spices', name:'سماق', desc:'250 غرام', price:18000, emoji:'🍋'},
-  {id:'baharat', cat:'spices', name:'بهارات مشكلة', desc:'250 غرام', price:16000, emoji:'🧂'},
-  {id:'turmeric', cat:'spices', name:'كركم', desc:'250 غرام', price:10000, emoji:'🟡'},
-  {id:'cardamom', cat:'spices', name:'هيل', desc:'100 غرام', price:35000, emoji:'🌿'},
-  {id:'saffron', cat:'spices', name:'زعفران', desc:'5 غرام', price:95000, emoji:'🌺'},
-  {id:'tomato', cat:'fruits', name:'بندورة', desc:'1 كيلو غرام', price:8000, emoji:'🍅'},
-  {id:'cucumber', cat:'fruits', name:'خيار', desc:'1 كيلو غرام', price:6000, emoji:'🥒'},
-  {id:'onion', cat:'fruits', name:'بصل', desc:'1 كيلو غرام', price:5000, emoji:'🧅'},
-  {id:'garlic', cat:'fruits', name:'ثوم', desc:'500 غرام', price:12000, emoji:'🧄'},
-  {id:'potato', cat:'fruits', name:'بطاطا', desc:'2 كيلو غرام', price:10000, emoji:'🥔'},
-  {id:'eggplant', cat:'fruits', name:'باذنجان', desc:'1 كيلو غرام', price:7000, emoji:'🍆'},
-  {id:'zucchini', cat:'fruits', name:'كوسا', desc:'1 كيلو غرام', price:8000, emoji:'🥒'},
-  {id:'lemon', cat:'fruits', name:'ليمون', desc:'1 كيلو غرام', price:12000, emoji:'🍋'},
-  {id:'apple', cat:'fruits', name:'تفاح أحمر', desc:'1 كيلو غرام', price:18000, emoji:'🍎'},
-  {id:'banana', cat:'fruits', name:'موز', desc:'1 كيلو غرام', price:15000, emoji:'🍌'}
+  {id:'cola', cat:'drinks', name:'كوكاكولا كلاسيك', desc:'عبوة 12 علبة 330مل', price:85000, emoji:'🥤', badge:'hot', rating:4.8, reviews:124, popular:true},
+  {id:'zero', cat:'drinks', name:'كوكاكولا زيرو', desc:'بدون سكر، عبوة 12 علبة', price:85000, emoji:'🧊', rating:4.5, reviews:89},
+  {id:'7up', cat:'drinks', name:'7Up', desc:'علبة 330مل', price:15000, emoji:'🍋', rating:4.3, reviews:56},
+  {id:'fanta', cat:'drinks', name:'فانتا برتقال', desc:'علبة 330مل', price:15000, emoji:'🍊', rating:4.4, reviews:67},
+  {id:'sprite', cat:'drinks', name:'سبرايت', desc:'علبة 330مل', price:15000, emoji:'🥤', rating:4.2, reviews:45},
+  {id:'pepsi', cat:'drinks', name:'بيبسي', desc:'علبة 330مل', price:15000, emoji:'🥤', rating:4.3, reviews:52},
+  {id:'capri', cat:'drinks', name:'كابري سون كولا', desc:'10 علب 200مل', price:45000, emoji:'🧃', rating:4.6, reviews:78, badge:'new'},
+  {id:'lipton', cat:'drinks', name:'ليبتون آيس تي خوخ', desc:'علبة 330مل', price:20000, emoji:'🍹', rating:4.4, reviews:61},
+  {id:'water', cat:'drinks', name:'مياه معدنية', desc:'عبوة 1.5 لتر', price:8000, emoji:'💧', rating:4.7, reviews:112},
+  {id:'juice', cat:'drinks', name:'عصير برتقال', desc:'عبوة 1 لتر', price:35000, emoji:'🍊', rating:4.5, reviews:83},
+  {id:'rice', cat:'grocery', name:'رز أبو كاس', desc:'5 كيلو — أرز بسمتي', price:45000, emoji:'🍚', rating:4.9, reviews:156, popular:true},
+  {id:'bulgur', cat:'grocery', name:'برغل ناعم', desc:'1 كيلو غرام', price:12000, emoji:'🌾', rating:4.4, reviews:48},
+  {id:'lentil', cat:'grocery', name:'عدس أحمر', desc:'1 كيلو غرام', price:15000, emoji:'🫘', rating:4.3, reviews:42},
+  {id:'beans', cat:'grocery', name:'فاصولياء بيضاء', desc:'1 كيلو غرام', price:18000, emoji:'🫘', rating:4.5, reviews:55},
+  {id:'chickpeas', cat:'grocery', name:'حمص حب', desc:'1 كيلو غرام', price:14000, emoji:'🫘', rating:4.4, reviews:39},
+  {id:'flour', cat:'grocery', name:'طحين', desc:'2 كيلو غرام', price:12000, emoji:'🌾', rating:4.6, reviews:67},
+  {id:'sugar', cat:'grocery', name:'سكر', desc:'1 كيلو غرام', price:8000, emoji:'🍬', rating:4.5, reviews:72},
+  {id:'oil', cat:'grocery', name:'زيت دوار الشمس', desc:'1 لتر', price:45000, emoji:'🫒', rating:4.7, reviews:98},
+  {id:'oliveoil', cat:'grocery', name:'زيت زيتون', desc:'750 مل', price:65000, emoji:'🫒', rating:4.9, reviews:134, popular:true},
+  {id:'pasta', cat:'grocery', name:'معكرونة', desc:'500 غرام', price:8000, emoji:'🍝', rating:4.3, reviews:44},
+  {id:'freek', cat:'grocery', name:'فريكة', desc:'1 كيلو غرام', price:22000, emoji:'🌾', rating:4.6, reviews:58},
+  {id:'vermicelli', cat:'grocery', name:'شعيرية', desc:'500 غرام', price:7000, emoji:'🍜', rating:4.2, reviews:36},
+  {id:'hummus', cat:'appetizers', name:'حمص بالطحينة', desc:'400 غرام', price:18000, emoji:'🫓', rating:4.7, reviews:89},
+  {id:'mutabbal', cat:'appetizers', name:'متبل بيروتي', desc:'400 غرام', price:16000, emoji:'🍆', rating:4.5, reviews:67},
+  {id:'baba', cat:'appetizers', name:'بابا غنوج', desc:'400 غرام', price:15000, emoji:'🍆', rating:4.6, reviews:73},
+  {id:'tabbouleh', cat:'appetizers', name:'تبولة', desc:'400 غرام', price:14000, emoji:'🥗', rating:4.4, reviews:52},
+  {id:'fattoush', cat:'appetizers', name:'سلطة فتوش', desc:'400 غرام', price:12000, emoji:'🥗', rating:4.3, reviews:48},
+  {id:'thyme', cat:'appetizers', name:'زعتر بلدي', desc:'250 غرام', price:10000, emoji:'🌿', rating:4.8, reviews:95},
+  {id:'makdous', cat:'appetizers', name:'مكدوس', desc:'500 غرام', price:35000, emoji:'🍆', rating:4.7, reviews:82, badge:'new'},
+  {id:'yalanji', cat:'appetizers', name:'يالنجي', desc:'400 غرام', price:28000, emoji:'🥬', rating:4.5, reviews:61},
+  {id:'msabaha', cat:'appetizers', name:'مسبحة', desc:'400 غرام', price:16000, emoji:'🫓', rating:4.4, reviews:55},
+  {id:'foul', cat:'appetizers', name:'فول مدمس', desc:'400 غرام', price:10000, emoji:'🫘', rating:4.6, reviews:71},
+  {id:'halva', cat:'sweets', name:'حلاوة الجبن', desc:'500 غرام', price:45000, emoji:'🍯', rating:4.8, reviews:112},
+  {id:'baklava', cat:'sweets', name:'بقلاوة', desc:'500 غرام', price:55000, emoji:'🥮', rating:4.9, reviews:145, popular:true},
+  {id:'kunafa', cat:'sweets', name:'كنافة', desc:'500 غرام', price:40000, emoji:'🍮', rating:4.7, reviews:98},
+  {id:'maamoul', cat:'sweets', name:'معتمر', desc:'500 غرام', price:35000, emoji:'🍪', rating:4.5, reviews:67},
+  {id:'dates', cat:'sweets', name:'تمر مجدول', desc:'1 كيلو غرام', price:60000, emoji:'🌴', rating:4.8, reviews:123},
+  {id:'honey', cat:'sweets', name:'عسل طبيعي', desc:'500 غرام', price:75000, emoji:'🍯', rating:4.9, reviews:156},
+  {id:'jam', cat:'sweets', name:'مربى فراولة', desc:'400 غرام', price:18000, emoji:'🍓', rating:4.4, reviews:53},
+  {id:'tahini', cat:'sweets', name:'طحينة', desc:'500 غرام', price:25000, emoji:'🥜', rating:4.6, reviews:78},
+  {id:'molasses', cat:'sweets', name:'دبس رمان', desc:'500 مل', price:22000, emoji:'🍇', rating:4.5, reviews:62},
+  {id:'pomegranate', cat:'sweets', name:'دبس فليفلة', desc:'650 غرام', price:20000, emoji:'🌶️', rating:4.3, reviews:47},
+  {id:'halloumi', cat:'cheese', name:'جبنة حلوم', desc:'500 غرام', price:55000, emoji:'🧀', rating:4.7, reviews:98},
+  {id:'shanklish', cat:'cheese', name:'جبنة شلل', desc:'500 غرام', price:45000, emoji:'🧀', rating:4.5, reviews:72},
+  {id:'baladi', cat:'cheese', name:'جبنة بلدية', desc:'500 غرام', price:35000, emoji:'🧀', rating:4.4, reviews:58},
+  {id:'labneh', cat:'cheese', name:'لبنة بقري', desc:'400 غرام', price:28000, emoji:'🥛', rating:4.6, reviews:81},
+  {id:'kashkaval', cat:'cheese', name:'جبنة قشقوان', desc:'500 غرام', price:60000, emoji:'🧀', rating:4.8, reviews:115},
+  {id:'mortadella', cat:'cheese', name:'مرتديلا', desc:'500 غرام', price:35000, emoji:'🥩', rating:4.3, reviews:49},
+  {id:'pastirma', cat:'cheese', name:'بسطرمة', desc:'300 غرام', price:75000, emoji:'🥩', rating:4.7, reviews:87},
+  {id:'sujuk', cat:'cheese', name:'سجق', desc:'500 غرام', price:45000, emoji:'🌭', rating:4.4, reviews:56},
+  {id:'lahmacun', cat:'cheese', name:'لحم بعجين', desc:'4 قطع', price:30000, emoji:'🥟', rating:4.5, reviews:68},
+  {id:'kibbeh', cat:'cheese', name:'كبة', desc:'500 غرام', price:40000, emoji:'🥟', rating:4.6, reviews:79},
+  {id:'zaatar', cat:'spices', name:'زعتر', desc:'250 غرام', price:12000, emoji:'🌿', rating:4.7, reviews:86},
+  {id:'cumin', cat:'spices', name:'كمون', desc:'250 غرام', price:10000, emoji:'🧂', rating:4.5, reviews:63},
+  {id:'paprika', cat:'spices', name:'بابريكا', desc:'250 غرام', price:12000, emoji:'🌶️', rating:4.4, reviews:52},
+  {id:'cinnamon', cat:'spices', name:'قرفة', desc:'250 غرام', price:15000, emoji:'🫚', rating:4.6, reviews:71},
+  {id:'blackpepper', cat:'spices', name:'فلفل أسود', desc:'250 غرام', price:14000, emoji:'🌶️', rating:4.5, reviews:58},
+  {id:'sumac', cat:'spices', name:'سماق', desc:'250 غرام', price:18000, emoji:'🍋', rating:4.7, reviews:74},
+  {id:'baharat', cat:'spices', name:'بهارات مشكلة', desc:'250 غرام', price:16000, emoji:'🧂', rating:4.8, reviews:92},
+  {id:'turmeric', cat:'spices', name:'كركم', desc:'250 غرام', price:10000, emoji:'🟡', rating:4.4, reviews:48},
+  {id:'cardamom', cat:'spices', name:'هيل', desc:'100 غرام', price:35000, emoji:'🌿', rating:4.8, reviews:85},
+  {id:'saffron', cat:'spices', name:'زعفران', desc:'5 غرام', price:95000, emoji:'🌺', rating:4.9, reviews:132},
+  {id:'tomato', cat:'fruits', name:'بندورة', desc:'1 كيلو غرام', price:8000, emoji:'🍅', rating:4.3, reviews:41},
+  {id:'cucumber', cat:'fruits', name:'خيار', desc:'1 كيلو غرام', price:6000, emoji:'🥒', rating:4.2, reviews:38},
+  {id:'onion', cat:'fruits', name:'بصل', desc:'1 كيلو غرام', price:5000, emoji:'🧅', rating:4.4, reviews:45},
+  {id:'garlic', cat:'fruits', name:'ثوم', desc:'500 غرام', price:12000, emoji:'🧄', rating:4.5, reviews:52},
+  {id:'potato', cat:'fruits', name:'بطاطا', desc:'2 كيلو غرام', price:10000, emoji:'🥔', rating:4.3, reviews:44},
+  {id:'eggplant', cat:'fruits', name:'باذنجان', desc:'1 كيلو غرام', price:7000, emoji:'🍆', rating:4.2, reviews:37},
+  {id:'zucchini', cat:'fruits', name:'كوسا', desc:'1 كيلو غرام', price:8000, emoji:'🥒', rating:4.1, reviews:33},
+  {id:'lemon', cat:'fruits', name:'ليمون', desc:'1 كيلو غرام', price:12000, emoji:'🍋', rating:4.5, reviews:49},
+  {id:'apple', cat:'fruits', name:'تفاح أحمر', desc:'1 كيلو غرام', price:18000, emoji:'🍎', rating:4.6, reviews:57},
+  {id:'banana', cat:'fruits', name:'موز', desc:'1 كيلو غرام', price:15000, emoji:'🍌', rating:4.4, reviews:43}
 ];
 
-let cart = {};
+// ========== STATE ==========
+let cart = JSON.parse(localStorage.getItem('cart') || '{}');
 let customerLocation = null;
+let currentSort = 'default';
+let currentCategory = 'all';
+let appliedCoupon = null;
+
+const coupons = {
+  'WELCOME10': { discount: 10, type: 'percent' },
+  'SAVE20': { discount: 20, type: 'percent' },
+  'FIRST50': { discount: 50000, type: 'fixed' }
+};
+
+// ========== THEME ==========
+function toggleTheme() {
+  const html = document.documentElement;
+  const isLight = html.getAttribute('data-theme') === 'light';
+  html.setAttribute('data-theme', isLight ? 'dark' : 'light');
+  document.getElementById('themeToggle').textContent = isLight ? '🌙' : '☀️';
+  localStorage.setItem('theme', isLight ? 'dark' : 'light');
+}
+
+function loadTheme() {
+  const saved = localStorage.getItem('theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  document.getElementById('themeToggle').textContent = saved === 'light' ? '☀️' : '🌙';
+}
+
+// ========== PRODUCTS RENDERING ==========
+function getSortedProducts(items) {
+  const sorted = [...items];
+  switch(currentSort) {
+    case 'price-low': sorted.sort((a,b) => a.price - b.price); break;
+    case 'price-high': sorted.sort((a,b) => b.price - a.price); break;
+    case 'rating': sorted.sort((a,b) => b.rating - a.rating); break;
+    case 'popular': sorted.sort((a,b) => b.reviews - a.reviews); break;
+  }
+  return sorted;
+}
 
 function renderProducts(category = 'all') {
+  currentCategory = category;
   const grid = document.getElementById('productsGrid');
-  const filtered = category === 'all' ? products : products.filter(p => p.cat === category);
+  let filtered = category === 'all' ? products : products.filter(p => p.cat === category);
+  filtered = getSortedProducts(filtered);
+  
   grid.innerHTML = filtered.map(p => {
     const qty = cart[p.id] || 0;
+    const stars = '★'.repeat(Math.floor(p.rating)) + (p.rating % 1 >= 0.5 ? '½' : '');
+    const badgeClass = p.badge === 'new' ? 'new' : p.badge === 'sale' ? 'sale' : p.badge === 'hot' ? 'hot' : '';
+    const badgeText = p.badge === 'new' ? 'جديد' : p.badge === 'sale' ? 'خصم' : p.badge === 'hot' ? '🔥' : '';
+    
     return `
     <div class="card" id="card-${p.id}" data-cat="${p.cat}">
       <div class="card-img">
         <span class="emoji-icon">${p.emoji}</span>
-        ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
+        ${badgeText ? `<span class="badge ${badgeClass}">${badgeText}</span>` : ''}
       </div>
       <div class="card-body">
+        <div class="stars">${stars} <span>(${p.reviews})</span></div>
         <h3>${p.name}</h3>
         <p class="desc">${p.desc}</p>
         <div class="card-foot">
@@ -374,6 +529,17 @@ function renderProducts(category = 'all') {
   }).join('');
 }
 
+// ========== SORTING ==========
+document.querySelectorAll('.sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentSort = btn.dataset.sort;
+    renderProducts(currentCategory);
+  });
+});
+
+// ========== CATEGORIES ==========
 document.querySelectorAll('.cat-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
@@ -382,10 +548,53 @@ document.querySelectorAll('.cat-btn').forEach(btn => {
   });
 });
 
+// ========== SEARCH ==========
+function searchProducts(query) {
+  query = query.toLowerCase().trim();
+  if (!query) { renderProducts('all'); return; }
+  const grid = document.getElementById('productsGrid');
+  const filtered = products.filter(p => 
+    p.name.includes(query) || p.desc.includes(query) || p.cat.includes(query)
+  );
+  const sorted = getSortedProducts(filtered);
+  
+  if (sorted.length === 0) {
+    grid.innerHTML = '<div style="text-align:center;color:var(--muted);padding:40px;grid-column:1/-1">لا توجد نتائج — جرب بحث آخر</div>';
+    return;
+  }
+  
+  grid.innerHTML = sorted.map(p => {
+    const qty = cart[p.id] || 0;
+    const stars = '★'.repeat(Math.floor(p.rating));
+    return `
+    <div class="card" id="card-${p.id}" data-cat="${p.cat}">
+      <div class="card-img"><span class="emoji-icon">${p.emoji}</span></div>
+      <div class="card-body">
+        <div class="stars">${stars} <span>(${p.reviews})</span></div>
+        <h3>${p.name}</h3>
+        <p class="desc">${p.desc}</p>
+        <div class="card-foot">
+          <div class="price">${p.price.toLocaleString()}<small> ل.س</small></div>
+          <div class="qty-control">
+            <button class="qty-btn" onclick="changeQty('${p.id}',-1)">−</button>
+            <span class="qty-val" id="qty-${p.id}">${qty}</span>
+            <button class="qty-btn" onclick="changeQty('${p.id}',1)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ========== CART ==========
+function saveCart() { localStorage.setItem('cart', JSON.stringify(cart)); }
+
 function changeQty(id, delta) {
   cart[id] = Math.max(0, (cart[id] || 0) + delta);
+  if (cart[id] === 0) delete cart[id];
   const qtyEl = document.getElementById(`qty-${id}`);
-  if (qtyEl) qtyEl.textContent = cart[id];
+  if (qtyEl) qtyEl.textContent = cart[id] || 0;
+  saveCart();
   updateSummary();
   renderCart();
   if (delta > 0) {
@@ -394,19 +603,15 @@ function changeQty(id, delta) {
   }
 }
 
-let toastTimer;
-function showToast(p) {
-  const veil = document.getElementById('toastVeil');
-  document.getElementById('toastIcon').textContent = p.emoji;
-  document.getElementById('toastTitle').textContent = '✓ تمت الإضافة!';
-  document.getElementById('toastMsg').textContent = `${p.name} أُضيف للسلة`;
-  veil.classList.add('open');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(hideToast, 3000);
-}
-
-function hideToast() {
-  document.getElementById('toastVeil').classList.remove('open');
+function clearCart() {
+  cart = {};
+  saveCart();
+  updateSummary();
+  renderCart();
+  renderProducts(currentCategory);
+  appliedCoupon = null;
+  document.getElementById('couponInput').value = '';
+  document.getElementById('couponStatus').textContent = '';
 }
 
 function updateSummary() {
@@ -417,13 +622,35 @@ function updateSummary() {
     total += qty * p.price;
     count += qty;
   }
+  
+  let discount = 0;
+  if (appliedCoupon) {
+    const c = coupons[appliedCoupon];
+    discount = c.type === 'percent' ? Math.round(total * c.discount / 100) : c.discount;
+    discount = Math.min(discount, total);
+  }
+  
+  const final = total - discount;
+  
   document.getElementById('cartCount').textContent = count;
   document.getElementById('sumItems').textContent = `المنتجات: ${count}`;
-  document.getElementById('sumTotal').textContent = `${total.toLocaleString()} ل.س`;
-  document.getElementById('sumTotalBig').textContent = `${total.toLocaleString()} ل.س`;
-  document.getElementById('cartTotal').textContent = `${total.toLocaleString()} ل.س`;
+  document.getElementById('sumTotal').textContent = `${final.toLocaleString()} ل.س`;
+  document.getElementById('sumTotalBig').textContent = `${final.toLocaleString()} ل.س`;
+  document.getElementById('cartTotal').textContent = `${final.toLocaleString()} ل.س`;
+  
   document.getElementById('sendBtn').disabled = !(count > 0 && document.getElementById('customerName').value.trim() !== '');
   document.getElementById('cartCheckoutBtn').disabled = !(count > 0);
+  document.getElementById('clearCartBtn').disabled = !(count > 0);
+  
+  if (appliedCoupon && discount > 0) {
+    document.getElementById('discountRow').style.display = 'flex';
+    document.getElementById('discountAmt').textContent = `-${discount.toLocaleString()} ل.س`;
+    document.getElementById('discountRow2').style.display = 'flex';
+    document.getElementById('discountAmt2').textContent = `-${discount.toLocaleString()} ل.س`;
+  } else {
+    document.getElementById('discountRow').style.display = 'none';
+    document.getElementById('discountRow2').style.display = 'none';
+  }
 }
 
 function renderCart() {
@@ -464,6 +691,49 @@ function goToCheckout() {
   document.getElementById('checkout').scrollIntoView({ behavior: 'smooth' });
 }
 
+// ========== COUPON ==========
+function applyCoupon() {
+  const code = document.getElementById('couponInput').value.trim().toUpperCase();
+  const status = document.getElementById('couponStatus');
+  
+  if (!code) {
+    status.textContent = 'أدخل كود الخصم';
+    status.className = 'coupon-status error';
+    return;
+  }
+  
+  if (coupons[code]) {
+    appliedCoupon = code;
+    const c = coupons[code];
+    const txt = c.type === 'percent' ? `خصم ${c.discount}%` : `خصم ${c.discount.toLocaleString()} ل.س`;
+    status.textContent = `✓ تم تطبيق: ${txt}`;
+    status.className = 'coupon-status success';
+    updateSummary();
+  } else {
+    appliedCoupon = null;
+    status.textContent = 'كود غير صالح';
+    status.className = 'coupon-status error';
+    updateSummary();
+  }
+}
+
+// ========== TOAST ==========
+let toastTimer;
+function showToast(p) {
+  const veil = document.getElementById('toastVeil');
+  document.getElementById('toastIcon').textContent = p.emoji;
+  document.getElementById('toastTitle').textContent = '✓ تمت الإضافة!';
+  document.getElementById('toastMsg').textContent = `${p.name} أُضيف للسلة`;
+  veil.classList.add('open');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(hideToast, 3000);
+}
+
+function hideToast() {
+  document.getElementById('toastVeil').classList.remove('open');
+}
+
+// ========== LOCATION ==========
 function getLocation() {
   const btn = document.getElementById('locationBtn');
   const status = document.getElementById('locationStatus');
@@ -486,7 +756,7 @@ function getLocation() {
       status.className = 'location-status success';
       btn.disabled = false;
     },
-    (err) => {
+    () => {
       status.textContent = 'تعذر تحديد الموقع — تأكد من السماح بالوصول';
       status.className = 'location-status error';
       btn.disabled = false;
@@ -495,6 +765,7 @@ function getLocation() {
   );
 }
 
+// ========== DAYS & TIMES ==========
 function populateDays() {
   const sel = document.getElementById('daySelect');
   const today = new Date().getDay();
@@ -518,18 +789,24 @@ function populateTimes() {
   }
 }
 
+// ========== SEND ORDER ==========
 function sendOrder() {
   const name = document.getElementById('customerName').value.trim();
   const phone = document.getElementById('customerPhone').value.trim();
   const dayOpt = document.getElementById('daySelect').selectedOptions[0].text;
   const time = document.getElementById('timeSelect').value;
+  const orderId = 'ORD-' + Date.now().toString(36).toUpperCase();
+  
   let msg = `🛒 *طلب جديد — ماركت البيرقدار*\n\n`;
   msg += `👤 الاسم: ${name}\n`;
   if (phone) msg += `📱 الهاتف: ${phone}\n`;
-  msg += `📅 الموعد: ${dayOpt} الساعة ${time}\n\n`;
+  msg += `📅 الموعد: ${dayOpt} الساعة ${time}\n`;
+  msg += `🔖 رقم الطلب: ${orderId}\n\n`;
+  
   if (customerLocation) {
     msg += `📍 *موقع العميل:*\n${customerLocation.url}\n\n`;
   }
+  
   msg += `📦 *المنتجات:*\n`;
   let total = 0;
   for (const p of products) {
@@ -540,17 +817,53 @@ function sendOrder() {
       msg += `${p.emoji} ${p.name}: ${qty} × ${p.price.toLocaleString()} ل.س = ${sub.toLocaleString()} ل.س\n`;
     }
   }
+  
+  if (appliedCoupon && coupons[appliedCoupon]) {
+    const c = coupons[appliedCoupon];
+    const discount = c.type === 'percent' ? Math.round(total * c.discount / 100) : c.discount;
+    msg += `\n🎟️ الخصم: -${Math.min(discount, total).toLocaleString()} ل.س\n`;
+    total -= Math.min(discount, total);
+  }
+  
   msg += `\n💰 *المجموع: ${total.toLocaleString()} ل.س*`;
   msg += `\n\n— أُرسل من موقع ماركت البيرقدار`;
+  
+  // Show confirmation
+  document.getElementById('orderIdDisplay').textContent = orderId;
+  document.getElementById('confirmVeil').classList.add('open');
+  
+  // Send to WhatsApp
   window.open(`https://wa.me/491621356262?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
+function closeConfirm() {
+  document.getElementById('confirmVeil').classList.remove('open');
+  clearCart();
+}
+
+// ========== SHARE ==========
+function shareWhatsapp() {
+  const text = '🛒 تابع ماركت البيرقدار — متجرك العربي للبقالة والمشروبات!';
+  window.open(`https://wa.me/?text=${encodeURIComponent(text + '\n' + window.location.href)}`, '_blank');
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    alert('تم نسخ الرابط!');
+  });
+}
+
+// ========== EVENT LISTENERS ==========
 document.getElementById('customerName').addEventListener('input', updateSummary);
 document.getElementById('customerPhone').addEventListener('input', updateSummary);
+
+// ========== INIT ==========
+loadTheme();
 renderProducts();
 populateDays();
 populateTimes();
 updateSummary();
+renderCart();
 </script>
 </body>
 </html>
