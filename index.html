@@ -24,6 +24,8 @@ nav a:hover{color:var(--ink)}
 h1{font-size:clamp(2.8rem,8vw,5.5rem);font-weight:900;line-height:1.1;letter-spacing:-1.5px;margin-bottom:16px}
 h1 .brand{background:linear-gradient(135deg,var(--cola),var(--cola-glow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 h1 .brand-alt{background:linear-gradient(135deg,var(--doritos),var(--doritos-glow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-hero{display:flex;flex-direction:column;align-items:center;gap:4px}
+.logo-hero img{filter:drop-shadow(0 4px 16px rgba(0,0,0,.5))}
 .hero p.sub{color:var(--muted);font-size:clamp(1rem,2.5vw,1.3rem);max-width:520px;margin:0 auto 36px;line-height:1.8}
 .marquee{background:linear-gradient(90deg,#660000,var(--cola),var(--doritos),#994400);padding:14px 0;overflow:hidden;white-space:nowrap}
 .marquee-track{display:inline-block;animation:scroll 25s linear infinite;font-weight:800;font-size:1rem;letter-spacing:1px}
@@ -89,7 +91,7 @@ footer .fine{font-size:.78rem;opacity:.5;margin-top:18px}
 <nav>
   <div class="logo">
     <img src="logo.svg" alt="شعار سوريا" style="height:48px;width:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4))">
-    <span>سناك بوينت</span>
+    <span>ماركت <span style="color:var(--gold)">البيرقدار</span></span>
   </div>
   <ul><li><a href="#order">اطلب الآن</a></li></ul>
 </nav>
@@ -97,7 +99,7 @@ footer .fine{font-size:.78rem;opacity:.5;margin-top:18px}
 <header class="hero">
   <div class="hero-inner">
     <span class="kicker">توصيل مجاني للطلبات فوق 50,000 ل.س</span>
-    <h1><span class="brand">سناك</span> <span class="brand-alt">بوينت</span></h1>
+    <h1 class="logo-hero"><img src="logo.svg" alt="شعار سوريا" style="height:100px;width:auto;margin-bottom:8px"><br>ماركت <span class="brand-alt">البيرقدار</span></h1>
     <p class="sub">متجرك العربي — بقالة، مقبلات، حلويات، ومشروبات. اطلب الآن واستلم لباب بيتك.</p>
   </div>
 </header>
@@ -157,9 +159,9 @@ footer .fine{font-size:.78rem;opacity:.5;margin-top:18px}
 </section>
 
 <footer>
-  <div class="f-logo"><img src="logo.svg" alt="شعار سوريا" style="height:40px;width:auto;margin-bottom:8px"> سناك بوينت</div>
+  <div class="f-logo"><img src="logo.svg" alt="شعار سوريا" style="height:40px;width:auto;margin-bottom:8px"><br>ماركت <span style="color:var(--gold)">البيرقدار</span></div>
   <p>متجرك العربي — بقالة، مقبلات، حلويات، ومشروبات. التوصيل لباب البيت.</p>
-  <p class="fine">© 2026 سناك بوينت — موقع تجريبي</p>
+  <p class="fine">© 2026 ماركت البيرقدار — موقع تجريبي</p>
 </footer>
 
 <script>
