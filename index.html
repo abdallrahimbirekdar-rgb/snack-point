@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>سناك بوينت — طلب مشترياتك السورية</title>
+<title>ماركت البيرقدار — طلب مشترياتك السورية</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Changa:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0a0a0f;--surface:#12121a;--surface-2:#18181f;--ink:#f5f5f5;--muted:#a0a0b0;--border:#252530;--cola:#e60012;--cola-glow:#ff1a2b;--doritos:#f39200;--doritos-glow:#ffad33;--gold:#ffc107;--wa:#25d366;--wa-glow:#4be383;--radius:20px}
@@ -11,52 +11,98 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:'Cairo',system-ui,sans-serif;overflow-x:hidden;min-height:100vh}
 ::selection{background:var(--cola);color:#fff}
+
+/* NAV */
 nav{position:fixed;top:0;right:0;left:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 5vw;background:rgba(10,10,15,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
 .logo{font-family:'Changa',sans-serif;font-weight:800;font-size:1.4rem;color:var(--wa);display:flex;align-items:center;gap:6px}
-nav ul{display:flex;gap:24px;list-style:none}
+.logo img{height:40px;width:auto}
+nav ul{display:flex;gap:24px;list-style:none;align-items:center}
 nav a{color:var(--muted);text-decoration:none;font-weight:600;font-size:.95rem;transition:color .2s}
 nav a:hover{color:var(--ink)}
+
+/* CART BUTTON */
+.cart-btn{position:relative;display:flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--wa);border-radius:12px;background:rgba(37,211,102,.08);color:var(--wa);font-family:'Cairo',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .2s}
+.cart-btn:hover{background:rgba(37,211,102,.15)}
+.cart-count{background:var(--wa);color:#000;border-radius:50%;min-width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;padding:0 4px}
+
+/* HERO */
 .hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 20px 80px;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(230,0,18,.08),transparent 70%),var(--bg)}
 .hero-inner{max-width:900px}
 .kicker{display:inline-flex;align-items:center;gap:8px;font-size:.9rem;font-weight:700;color:var(--wa);border:1px solid rgba(37,211,102,.3);border-radius:100px;padding:8px 20px;margin-bottom:28px;background:rgba(37,211,102,.06)}
 .kicker::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--wa);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 h1{font-size:clamp(2.8rem,8vw,5.5rem);font-weight:900;line-height:1.1;letter-spacing:-1.5px;margin-bottom:16px}
+.logo-hero{display:flex;flex-direction:column;align-items:center;gap:4px}
+.logo-hero img{height:100px;width:auto;filter:drop-shadow(0 4px 16px rgba(0,0,0,.5));margin-bottom:8px}
 h1 .brand{background:linear-gradient(135deg,var(--cola),var(--cola-glow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 h1 .brand-alt{background:linear-gradient(135deg,var(--doritos),var(--doritos-glow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.logo-hero{display:flex;flex-direction:column;align-items:center;gap:4px}
-.logo-hero img{filter:drop-shadow(0 4px 16px rgba(0,0,0,.5))}
 .hero p.sub{color:var(--muted);font-size:clamp(1rem,2.5vw,1.3rem);max-width:520px;margin:0 auto 36px;line-height:1.8}
+
+/* MARQUEE */
 .marquee{background:linear-gradient(90deg,#660000,var(--cola),var(--doritos),#994400);padding:14px 0;overflow:hidden;white-space:nowrap}
 .marquee-track{display:inline-block;animation:scroll 25s linear infinite;font-weight:800;font-size:1rem;letter-spacing:1px}
 .marquee-track span{margin:0 28px;display:inline-flex;align-items:center;gap:8px}
 @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SECTIONS */
 section{padding:80px 5vw}
 .section-head{max-width:1100px;margin:0 auto 48px;text-align:center}
 .section-head h2{font-size:clamp(2rem,5vw,2.8rem);font-weight:900;letter-spacing:-.5px;margin-bottom:8px}
 .section-head p{color:var(--muted);font-size:1.05rem}
+
+/* CATEGORIES */
 .categories{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:32px}
 .cat-btn{padding:10px 20px;border:1px solid var(--border);border-radius:100px;background:var(--surface);color:var(--ink);font-family:'Cairo',sans-serif;font-weight:600;font-size:.9rem;cursor:pointer;transition:all .2s}
 .cat-btn:hover,.cat-btn.active{background:var(--wa);border-color:var(--wa);color:#000}
-.grid{max-width:1200px;margin:0 auto;display:grid;gap:24px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+
+/* PRODUCTS GRID */
+.grid{max-width:1200px;margin:0 auto;display:grid;gap:24px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
 .card:hover{transform:translateY(-8px);border-color:#3a3a50;box-shadow:0 24px 60px rgba(0,0,0,.5)}
-.card-img{height:220px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(160deg,#1a1a22,#0f0f14)}
+.card-img{height:200px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(160deg,#1a1a22,#0f0f14)}
 .card-img::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.03),transparent 70%)}
-.emoji-icon{font-size:5rem;display:block;line-height:1;z-index:1;transition:transform .35s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 8px 24px rgba(0,0,0,.5))}
+.emoji-icon{font-size:4.5rem;display:block;line-height:1;z-index:1;transition:transform .35s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 8px 24px rgba(0,0,0,.5))}
 .card:hover .emoji-icon{transform:scale(1.15) rotate(-5deg)}
 .badge{position:absolute;top:14px;right:14px;z-index:3;background:var(--gold);color:#1a1205;font-size:.75rem;font-weight:800;padding:5px 14px;border-radius:100px;letter-spacing:.3px}
-.card-body{padding:20px;display:flex;flex-direction:column;gap:10px;flex:1}
-.card-body h3{font-size:1.15rem;font-weight:800;line-height:1.4}
-.card-body .desc{color:var(--muted);font-size:.88rem;line-height:1.7;flex:1}
-.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:8px;padding-top:12px;border-top:1px solid var(--border)}
-.price{font-family:'Changa',sans-serif;font-weight:800;font-size:1.5rem;color:var(--gold)}
-.price small{font-size:.75rem;color:var(--muted);font-family:'Cairo',sans-serif;font-weight:600}
+.card-body{padding:18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card-body h3{font-size:1.05rem;font-weight:800;line-height:1.4}
+.card-body .desc{color:var(--muted);font-size:.82rem;line-height:1.6;flex:1}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding-top:10px;border-top:1px solid var(--border)}
+.price{font-family:'Changa',sans-serif;font-weight:800;font-size:1.3rem;color:var(--gold)}
+.price small{font-size:.7rem;color:var(--muted);font-family:'Cairo',sans-serif;font-weight:600}
 .qty-control{display:flex;align-items:center;gap:6px}
-.qty-btn{width:38px;height:38px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);color:var(--ink);font-weight:800;cursor:pointer;font-size:1.15rem;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.qty-btn{width:34px;height:34px;border-radius:10px;border:1px solid var(--border);background:var(--surface-2);color:var(--ink);font-weight:800;cursor:pointer;font-size:1.1rem;transition:all .15s;display:flex;align-items:center;justify-content:center}
 .qty-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(255,193,7,.08)}
 .qty-btn:active{transform:scale(.92)}
-.qty-val{min-width:32px;text-align:center;font-weight:800;font-size:1.15rem}
+.qty-val{min-width:28px;text-align:center;font-weight:800;font-size:1.1rem}
+
+/* CART SIDEBAR */
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s}
+.cart-overlay.open{opacity:1;pointer-events:auto}
+.cart-sidebar{position:fixed;top:0;left:0;bottom:0;width:min(420px,92vw);z-index:201;background:var(--surface);border-right:1px solid var(--border);transform:translateX(-100%);transition:transform .35s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}
+.cart-sidebar.open{transform:translateX(0)}
+.cart-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border)}
+.cart-header h3{font-size:1.2rem;font-weight:800}
+.close-cart{background:none;border:none;color:var(--muted);font-size:1.6rem;cursor:pointer;line-height:1;padding:4px}
+.close-cart:hover{color:var(--ink)}
+.cart-items{flex:1;overflow-y:auto;padding:16px 24px;display:flex;flex-direction:column;gap:12px}
+.cart-empty{text-align:center;color:var(--muted);margin-top:60px;line-height:2}
+.cart-empty .big{font-size:3.5rem;display:block;margin-bottom:12px}
+.cart-row{display:flex;align-items:center;gap:12px;padding:12px;background:var(--surface-2);border:1px solid var(--border);border-radius:14px}
+.cart-row .emoji{font-size:2.2rem}
+.cart-row .info{flex:1}
+.cart-row .info b{display:block;font-size:.92rem;margin-bottom:2px}
+.cart-row .info span{color:var(--gold);font-family:'Changa',sans-serif;font-weight:700;font-size:.9rem}
+.cart-row .qty-control .qty-btn{width:28px;height:28px;font-size:.9rem;border-radius:8px}
+.cart-row .qty-val{min-width:22px;font-size:.95rem}
+.cart-footer{padding:20px 24px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:12px}
+.cart-total{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:1.15rem}
+.cart-total .val{font-family:'Changa',sans-serif;font-size:1.5rem;color:var(--gold)}
+.checkout-btn{width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--wa),#1da851);color:#fff;font-family:'Cairo',sans-serif;font-weight:800;font-size:1rem;cursor:pointer;transition:transform .15s}
+.checkout-btn:hover{transform:translateY(-2px)}
+.checkout-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
+/* FORM */
 .form-section{background:var(--surface);border-top:1px solid var(--border)}
 .form-grid{max-width:700px;margin:0 auto;display:grid;gap:20px}
 .field{display:flex;flex-direction:column;gap:8px}
@@ -81,25 +127,55 @@ section{padding:80px 5vw}
 .total-value{font-family:'Changa',sans-serif;font-size:1.6rem}
 footer{padding:50px 5vw 40px;text-align:center;color:var(--muted);border-top:1px solid var(--border)}
 footer .f-logo{font-family:'Changa',sans-serif;font-weight:800;font-size:1.3rem;color:var(--ink);margin-bottom:14px}
+footer .f-logo img{height:36px;width:auto;margin-bottom:6px}
 footer p{font-size:.9rem;line-height:2}
 footer .fine{font-size:.78rem;opacity:.5;margin-top:18px}
-@media(max-width:720px){nav ul{display:none}.emoji-icon{font-size:4rem}.card-img{height:180px}.categories{gap:8px}.cat-btn{padding:8px 16px;font-size:.82rem}}
-@media(max-width:420px){section{padding:60px 4vw}.grid{grid-template-columns:1fr}}
+
+@media(max-width:720px){
+  nav ul{display:none}
+  .emoji-icon{font-size:3.5rem}
+  .card-img{height:160px}
+  .categories{gap:8px}
+  .cat-btn{padding:8px 16px;font-size:.82rem}
+}
+@media(max-width:420px){
+  section{padding:60px 4vw}
+  .grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart(false)"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h3>🛒 سلة المشتريات</h3>
+    <button class="close-cart" onclick="toggleCart(false)">×</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty"><span class="big">🛒</span>سلتك فارغة<br>أضف بعض المنتجات!</div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total"><span>المجموع</span><span class="val" id="cartTotal">0 ل.س</span></div>
+    <button class="checkout-btn" id="cartCheckoutBtn" disabled onclick="goToCheckout()">إتمام الطلب →</button>
+  </div>
+</div>
+
 <nav>
   <div class="logo">
-    <img src="logo.svg" alt="شعار سوريا" style="height:48px;width:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4))">
+    <img src="logo.svg" alt="شعار سوريا">
     <span>ماركت <span style="color:var(--gold)">البيرقدار</span></span>
   </div>
-  <ul><li><a href="#order">اطلب الآن</a></li></ul>
+  <ul>
+    <li><button class="cart-btn" onclick="toggleCart(true)">🛒 السلة <span class="cart-count" id="cartCount">0</span></button></li>
+  </ul>
 </nav>
 
 <header class="hero">
   <div class="hero-inner">
     <span class="kicker">توصيل مجاني للطلبات فوق 50,000 ل.س</span>
-    <h1 class="logo-hero"><img src="logo.svg" alt="شعار سوريا" style="height:100px;width:auto;margin-bottom:8px"><br>ماركت <span class="brand-alt">البيرقدار</span></h1>
+    <h1 class="logo-hero"><img src="logo.svg" alt="شعار سوريا"><br>ماركت <span class="brand-alt">البيرقدار</span></h1>
     <p class="sub">متجرك العربي — بقالة، مقبلات، حلويات، ومشروبات. اطلب الآن واستلم لباب بيتك.</p>
   </div>
 </header>
@@ -129,7 +205,7 @@ footer .fine{font-size:.78rem;opacity:.5;margin-top:18px}
   <div class="grid" id="productsGrid"></div>
 </section>
 
-<section class="form-section">
+<section class="form-section" id="checkout">
   <div class="section-head"><h2>بياناتك وموعد الاستلام</h2></div>
   <div class="form-grid">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
@@ -159,14 +235,14 @@ footer .fine{font-size:.78rem;opacity:.5;margin-top:18px}
 </section>
 
 <footer>
-  <div class="f-logo"><img src="logo.svg" alt="شعار سوريا" style="height:40px;width:auto;margin-bottom:8px"><br>ماركت <span style="color:var(--gold)">البيرقدار</span></div>
+  <div class="f-logo"><img src="logo.svg" alt="شعار سوريا"><br>ماركت <span style="color:var(--gold)">البيرقدار</span></div>
   <p>متجرك العربي — بقالة، مقبلات، حلويات، ومشروبات. التوصيل لباب البيت.</p>
   <p class="fine">© 2026 ماركت البيرقدار — موقع تجريبي</p>
 </footer>
 
 <script>
 const products = [
-  {id:'cola', cat:'drinks', name:'كوكاكولا كلاسيك', desc:'عبوة 12 علبة 330مل', price:85000, img:'coca-cola.png', badge:'الأكثر مبيعاً'},
+  {id:'cola', cat:'drinks', name:'كوكاكولا كلاسيك', desc:'عبوة 12 علبة 330مل', price:85000, emoji:'🥤', badge:'الأكثر مبيعاً'},
   {id:'zero', cat:'drinks', name:'كوكاكولا زيرو', desc:'بدون سكر، عبوة 12 علبة', price:85000, emoji:'🧊'},
   {id:'7up', cat:'drinks', name:'7Up', desc:'علبة 330مل', price:15000, emoji:'🍋'},
   {id:'fanta', cat:'drinks', name:'فانتا برتقال', desc:'علبة 330مل', price:15000, emoji:'🍊'},
@@ -248,11 +324,10 @@ function renderProducts(category = 'all') {
   const filtered = category === 'all' ? products : products.filter(p => p.cat === category);
   grid.innerHTML = filtered.map(p => {
     const qty = cart[p.id] || 0;
-    const icon = p.img ? `<img src="${p.img}" alt="${p.name}" style="max-width:85%;max-height:85%;object-fit:contain">` : `<span class="emoji-icon">${p.emoji}</span>`;
     return `
     <div class="card" id="card-${p.id}" data-cat="${p.cat}">
       <div class="card-img">
-        ${icon}
+        <span class="emoji-icon">${p.emoji}</span>
         ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
       </div>
       <div class="card-body">
@@ -284,6 +359,7 @@ function changeQty(id, delta) {
   const qtyEl = document.getElementById(`qty-${id}`);
   if (qtyEl) qtyEl.textContent = cart[id];
   updateSummary();
+  renderCart();
 }
 
 function updateSummary() {
@@ -294,10 +370,51 @@ function updateSummary() {
     total += qty * p.price;
     count += qty;
   }
+  document.getElementById('cartCount').textContent = count;
   document.getElementById('sumItems').textContent = `المنتجات: ${count}`;
   document.getElementById('sumTotal').textContent = `${total.toLocaleString()} ل.س`;
   document.getElementById('sumTotalBig').textContent = `${total.toLocaleString()} ل.س`;
+  document.getElementById('cartTotal').textContent = `${total.toLocaleString()} ل.س`;
   document.getElementById('sendBtn').disabled = !(count > 0 && document.getElementById('customerName').value.trim() !== '');
+  document.getElementById('cartCheckoutBtn').disabled = !(count > 0);
+}
+
+function renderCart() {
+  const container = document.getElementById('cartItems');
+  const items = products.filter(p => (cart[p.id] || 0) > 0);
+  
+  if (items.length === 0) {
+    container.innerHTML = '<div class="cart-empty"><span class="big">🛒</span>سلتك فارغة<br>أضف بعض المنتجات!</div>';
+    return;
+  }
+  
+  container.innerHTML = items.map(p => {
+    const qty = cart[p.id] || 0;
+    const sub = qty * p.price;
+    return `
+    <div class="cart-row">
+      <span class="emoji">${p.emoji}</span>
+      <div class="info">
+        <b>${p.name}</b>
+        <span>${sub.toLocaleString()} ل.س</span>
+      </div>
+      <div class="qty-control">
+        <button class="qty-btn" onclick="changeQty('${p.id}',-1)">−</button>
+        <span class="qty-val">${qty}</span>
+        <button class="qty-btn" onclick="changeQty('${p.id}',1)">+</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleCart(open) {
+  document.getElementById('cartOverlay').classList.toggle('open', open);
+  document.getElementById('cartSidebar').classList.toggle('open', open);
+}
+
+function goToCheckout() {
+  toggleCart(false);
+  document.getElementById('checkout').scrollIntoView({ behavior: 'smooth' });
 }
 
 function getLocation() {
@@ -359,7 +476,7 @@ function sendOrder() {
   const phone = document.getElementById('customerPhone').value.trim();
   const dayOpt = document.getElementById('daySelect').selectedOptions[0].text;
   const time = document.getElementById('timeSelect').value;
-  let msg = `🛒 *طلب جديد — سناك بوينت*\n\n`;
+  let msg = `🛒 *طلب جديد — ماركت البيرقدار*\n\n`;
   msg += `👤 الاسم: ${name}\n`;
   if (phone) msg += `📱 الهاتف: ${phone}\n`;
   msg += `📅 الموعد: ${dayOpt} الساعة ${time}\n\n`;
@@ -377,7 +494,7 @@ function sendOrder() {
     }
   }
   msg += `\n💰 *المجموع: ${total.toLocaleString()} ل.س*`;
-  msg += `\n\n— أُرسل من موقع سناك بوينت`;
+  msg += `\n\n— أُرسل من موقع ماركت البيرقدار`;
   window.open(`https://wa.me/491621356262?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
