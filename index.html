@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سناك بوينت — طلب مشترياتك السورية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Changa:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--surface:#12121a;--surface-2:#18181f;--ink:#f5f5f5;--muted:#a0a0b0;--border:#252530;--cola:#e60012;--cola-glow:#ff1a2b;--doritos:#f39200;--doritos-glow:#ffad33;--gold:#ffc107;--wa:#25d366;--wa-glow:#4be383;--radius:20px}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Cairo',system-ui,sans-serif;overflow-x:hidden;min-height:100vh}
+::selection{background:var(--cola);color:#fff}
+nav{position:fixed;top:0;right:0;left:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 5vw;background:rgba(10,10,15,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Changa',sans-serif;font-weight:800;font-size:1.4rem;color:var(--wa);display:flex;align-items:center;gap:6px}
+nav ul{display:flex;gap:24px;list-style:none}
+nav a{color:var(--muted);text-decoration:none;font-weight:600;font-size:.95rem;transition:color .2s}
+nav a:hover{color:var(--ink)}
+.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 20px 80px;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(230,0,18,.08),transparent 70%),var(--bg)}
+.hero-inner{max-width:900px}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:.9rem;font-weight:700;color:var(--wa);border:1px solid rgba(37,211,102,.3);border-radius:100px;padding:8px 20px;margin-bottom:28px;background:rgba(37,211,102,.06)}
+.kicker::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--wa);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+h1{font-size:clamp(2.8rem,8vw,5.5rem);font-weight:900;line-height:1.1;letter-spacing:-1.5px;margin-bottom:16px}
+h1 .brand{background:linear-gradient(135deg,var(--cola),var(--cola-glow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h1 .brand-alt{background:linear-gradient(135deg,var(--doritos),var(--doritos-glow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p.sub{color:var(--muted);font-size:clamp(1rem,2.5vw,1.3rem);max-width:520px;margin:0 auto 36px;line-height:1.8}
+.marquee{background:linear-gradient(90deg,#660000,var(--cola),var(--doritos),#994400);padding:14px 0;overflow:hidden;white-space:nowrap}
+.marquee-track{display:inline-block;animation:scroll 25s linear infinite;font-weight:800;font-size:1rem;letter-spacing:1px}
+.marquee-track span{margin:0 28px;display:inline-flex;align-items:center;gap:8px}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+section{padding:80px 5vw}
+.section-head{max-width:1100px;margin:0 auto 48px;text-align:center}
+.section-head h2{font-size:clamp(2rem,5vw,2.8rem);font-weight:900;letter-spacing:-.5px;margin-bottom:8px}
+.section-head p{color:var(--muted);font-size:1.05rem}
+.categories{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:32px}
+.cat-btn{padding:10px 20px;border:1px solid var(--border);border-radius:100px;background:var(--surface);color:var(--ink);font-family:'Cairo',sans-serif;font-weight:600;font-size:.9rem;cursor:pointer;transition:all .2s}
+.cat-btn:hover,.cat-btn.active{background:var(--wa);border-color:var(--wa);color:#000}
+.grid{max-width:1200px;margin:0 auto;display:grid;gap:24px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.card:hover{transform:translateY(-8px);border-color:#3a3a50;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.card-img{height:220px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(160deg,#1a1a22,#0f0f14)}
+.card-img::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.03),transparent 70%)}
+.emoji-icon{font-size:5rem;display:block;line-height:1;z-index:1;transition:transform .35s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 8px 24px rgba(0,0,0,.5))}
+.card:hover .emoji-icon{transform:scale(1.15) rotate(-5deg)}
+.badge{position:absolute;top:14px;right:14px;z-index:3;background:var(--gold);color:#1a1205;font-size:.75rem;font-weight:800;padding:5px 14px;border-radius:100px;letter-spacing:.3px}
+.card-body{padding:20px;display:flex;flex-direction:column;gap:10px;flex:1}
+.card-body h3{font-size:1.15rem;font-weight:800;line-height:1.4}
+.card-body .desc{color:var(--muted);font-size:.88rem;line-height:1.7;flex:1}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:8px;padding-top:12px;border-top:1px solid var(--border)}
+.price{font-family:'Changa',sans-serif;font-weight:800;font-size:1.5rem;color:var(--gold)}
+.price small{font-size:.75rem;color:var(--muted);font-family:'Cairo',sans-serif;font-weight:600}
+.qty-control{display:flex;align-items:center;gap:6px}
+.qty-btn{width:38px;height:38px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);color:var(--ink);font-weight:800;cursor:pointer;font-size:1.15rem;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.qty-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(255,193,7,.08)}
+.qty-btn:active{transform:scale(.92)}
+.qty-val{min-width:32px;text-align:center;font-weight:800;font-size:1.15rem}
+.form-section{background:var(--surface);border-top:1px solid var(--border)}
+.form-grid{max-width:700px;margin:0 auto;display:grid;gap:20px}
+.field{display:flex;flex-direction:column;gap:8px}
+.field label{font-size:.9rem;font-weight:700;color:var(--muted)}
+.field input,.field select{padding:14px 18px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2);color:var(--ink);font-family:'Cairo',sans-serif;font-size:1rem;width:100%;transition:border-color .2s}
+.field input:focus,.field select:focus{outline:none;border-color:var(--wa);box-shadow:0 0 0 3px rgba(37,211,102,.1)}
+.location-field{margin-top:12px;padding:16px;border:1px dashed var(--border);border-radius:12px;text-align:center;background:rgba(37,211,102,.04)}
+.location-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border:1px solid var(--wa);border-radius:100px;background:transparent;color:var(--wa);font-family:'Cairo',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;transition:all .2s}
+.location-btn:hover{background:rgba(37,211,102,.12)}
+.location-btn:disabled{opacity:.5;cursor:not-allowed}
+.location-status{margin-top:8px;font-size:.85rem;color:var(--muted)}
+.location-status.success{color:var(--wa)}
+.location-status.error{color:#ff5555}
+.wa-btn{width:100%;padding:18px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--wa),#1da851);color:#fff;font-family:'Cairo',sans-serif;font-weight:800;font-size:1.15rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:transform .15s,box-shadow .2s;box-shadow:0 8px 30px rgba(37,211,102,.25)}
+.wa-btn:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(37,211,102,.4)}
+.wa-btn:active{transform:translateY(0)}
+.wa-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.wa-btn svg{flex-shrink:0}
+.summary-box{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;display:flex;flex-direction:column;gap:10px}
+.summary-row{display:flex;justify-content:space-between;align-items:center;font-size:.95rem}
+.summary-row.total{font-weight:800;font-size:1.25rem;color:var(--gold);border-top:2px solid var(--border);padding-top:14px;margin-top:6px}
+.total-value{font-family:'Changa',sans-serif;font-size:1.6rem}
+footer{padding:50px 5vw 40px;text-align:center;color:var(--muted);border-top:1px solid var(--border)}
+footer .f-logo{font-family:'Changa',sans-serif;font-weight:800;font-size:1.3rem;color:var(--ink);margin-bottom:14px}
+footer p{font-size:.9rem;line-height:2}
+footer .fine{font-size:.78rem;opacity:.5;margin-top:18px}
+@media(max-width:720px){nav ul{display:none}.emoji-icon{font-size:4rem}.card-img{height:180px}.categories{gap:8px}.cat-btn{padding:8px 16px;font-size:.82rem}}
+@media(max-width:420px){section{padding:60px 4vw}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav><div class="logo">🍿 سناك بوينت</div><ul><li><a href="#order">اطلب الآن</a></li></ul></nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="kicker">توصيل مجاني للطلبات فوق 50,000 ل.س</span>
+    <h1><span class="brand">سناك</span> <span class="brand-alt">بوينت</span></h1>
+    <p class="sub">متجرك العربي — بقالة، مقبلات، حلويات، ومشروبات. اطلب الآن واستلم لباب بيتك.</p>
+  </div>
+</header>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span>🥤 مشروبات غازية</span><span>🫒 زيتون ومخللات</span><span>🍯 عسل وحلويات</span><span>🥩 أجبان ولحوم</span><span>🌾 بقالة وحبوب</span><span>🧂 بهارات وتوابل</span>
+    <span>🥤 مشروبات غازية</span><span>🫒 زيتون ومخللات</span><span>🍯 عسل وحلويات</span><span>🥩 أجبان ولحوم</span><span>🌾 بقالة وحبوب</span><span>🧂 بهارات وتوابل</span>
+  </div>
+</div>
+
+<section id="order" style="padding-top:70px">
+  <div class="section-head">
+    <h2>🛒 اختر منتجاتك</h2>
+    <p>جميع الأسعار بالليرة السورية 🇸🇾 — التوصيل لباب البيت</p>
+  </div>
+  <div class="categories" id="categoryTabs">
+    <button class="cat-btn active" data-cat="all">الكل</button>
+    <button class="cat-btn" data-cat="drinks">مشروبات</button>
+    <button class="cat-btn" data-cat="grocery">بقالة</button>
+    <button class="cat-btn" data-cat="appetizers">مقبلات</button>
+    <button class="cat-btn" data-cat="sweets">حلويات</button>
+    <button class="cat-btn" data-cat="cheese">أجبان ولحوم</button>
+    <button class="cat-btn" data-cat="spices">بهارات</button>
+    <button class="cat-btn" data-cat="fruits">خضار وفواكه</button>
+  </div>
+  <div class="grid" id="productsGrid"></div>
+</section>
+
+<section class="form-section">
+  <div class="section-head"><h2>بياناتك وموعد الاستلام</h2></div>
+  <div class="form-grid">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="field"><label>الاسم *</label><input type="text" id="customerName" placeholder="اكتب اسمك..."></div>
+      <div class="field"><label>رقم الهاتف</label><input type="tel" id="customerPhone" placeholder="+49 xxx xxxxxxx"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="field"><label>اليوم</label><select id="daySelect"></select></div>
+      <div class="field"><label>الساعة</label><select id="timeSelect"></select></div>
+    </div>
+    <div class="location-field">
+      <button class="location-btn" id="locationBtn" onclick="getLocation()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        أرسل موقعك للتوصيل
+      </button>
+      <div class="location-status" id="locationStatus">اضغط الزر لإرسال موقعك الحالي</div>
+    </div>
+    <div class="summary-box">
+      <div class="summary-row"><span id="sumItems">المنتجات: 0</span><span id="sumTotal">0 ل.س</span></div>
+      <div class="summary-row total"><span>المجموع الكلي</span><span class="total-value" id="sumTotalBig">0 ل.س</span></div>
+    </div>
+    <button class="wa-btn" id="sendBtn" disabled onclick="sendOrder()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      إرسال الطلب عبر واتساب
+    </button>
+  </div>
+</section>
+
+<footer>
+  <div class="f-logo">🍿 سناك بوينت</div>
+  <p>متجرك العربي — بقالة، مقبلات، حلويات، ومشروبات. التوصيل لباب البيت.</p>
+  <p class="fine">© 2026 سناك بوينت — موقع تجريبي</p>
+</footer>
+
+<script>
+const products = [
+  {id:'cola', cat:'drinks', name:'كوكاكولا كلاسيك', desc:'عبوة 12 علبة 330مل', price:85000, emoji:'🥤', badge:'الأكثر مبيعاً'},
+  {id:'zero', cat:'drinks', name:'كوكاكولا زيرو', desc:'بدون سكر، عبوة 12 علبة', price:85000, emoji:'🧊'},
+  {id:'7up', cat:'drinks', name:'7Up', desc:'علبة 330مل', price:15000, emoji:'🍋'},
+  {id:'fanta', cat:'drinks', name:'فانتا برتقال', desc:'علبة 330مل', price:15000, emoji:'🍊'},
+  {id:'sprite', cat:'drinks', name:'سبرايت', desc:'علبة 330مل', price:15000, emoji:'🥤'},
+  {id:'pepsi', cat:'drinks', name:'بيبسي', desc:'علبة 330مل', price:15000, emoji:'🥤'},
+  {id:'capri', cat:'drinks', name:'كابري سون كولا', desc:'10 علب 200مل', price:45000, emoji:'🧃'},
+  {id:'lipton', cat:'drinks', name:'ليبتون آيس تي خوخ', desc:'علبة 330مل', price:20000, emoji:'🍹'},
+  {id:'water', cat:'drinks', name:'مياه معدنية', desc:'عبوة 1.5 لتر', price:8000, emoji:'💧'},
+  {id:'juice', cat:'drinks', name:'عصير برتقال', desc:'عبوة 1 لتر', price:35000, emoji:'🍊'},
+  {id:'rice', cat:'grocery', name:'رز أبو كاس', desc:'5 كيلو — أرز بسمتي', price:45000, emoji:'🍚'},
+  {id:'bulgur', cat:'grocery', name:'برغل ناعم', desc:'1 كيلو غرام', price:12000, emoji:'🌾'},
+  {id:'lentil', cat:'grocery', name:'عدس أحمر', desc:'1 كيلو غرام', price:15000, emoji:'🫘'},
+  {id:'beans', cat:'grocery', name:'فاصولياء بيضاء', desc:'1 كيلو غرام', price:18000, emoji:'🫘'},
+  {id:'chickpeas', cat:'grocery', name:'حمص حب', desc:'1 كيلو غرام', price:14000, emoji:'🫘'},
+  {id:'flour', cat:'grocery', name:'طحين', desc:'2 كيلو غرام', price:12000, emoji:'🌾'},
+  {id:'sugar', cat:'grocery', name:'سكر', desc:'1 كيلو غرام', price:8000, emoji:'🍬'},
+  {id:'oil', cat:'grocery', name:'زيت دوار الشمس', desc:'1 لتر', price:45000, emoji:'🫒'},
+  {id:'oliveoil', cat:'grocery', name:'زيت زيتون', desc:'750 مل', price:65000, emoji:'🫒'},
+  {id:'pasta', cat:'grocery', name:'معكرونة', desc:'500 غرام', price:8000, emoji:'🍝'},
+  {id:'freek', cat:'grocery', name:'فريكة', desc:'1 كيلو غرام', price:22000, emoji:'🌾'},
+  {id:'vermicelli', cat:'grocery', name:'شعيرية', desc:'500 غرام', price:7000, emoji:'🍜'},
+  {id:'hummus', cat:'appetizers', name:'حمص بالطحينة', desc:'400 غرام', price:18000, emoji:'🫓'},
+  {id:'mutabbal', cat:'appetizers', name:'متبل بيروتي', desc:'400 غرام', price:16000, emoji:'🍆'},
+  {id:'baba', cat:'appetizers', name:'بابا غنوج', desc:'400 غرام', price:15000, emoji:'🍆'},
+  {id:'tabbouleh', cat:'appetizers', name:'تبولة', desc:'400 غرام', price:14000, emoji:'🥗'},
+  {id:'fattoush', cat:'appetizers', name:'سلطة فتوش', desc:'400 غرام', price:12000, emoji:'🥗'},
+  {id:'thyme', cat:'appetizers', name:'زعتر بلدي', desc:'250 غرام', price:10000, emoji:'🌿'},
+  {id:'makdous', cat:'appetizers', name:'مكدوس', desc:'500 غرام', price:35000, emoji:'🍆'},
+  {id:'yalanji', cat:'appetizers', name:'يالنجي', desc:'400 غرام', price:28000, emoji:'🥬'},
+  {id:'msabaha', cat:'appetizers', name:'مسبحة', desc:'400 غرام', price:16000, emoji:'🫓'},
+  {id:'foul', cat:'appetizers', name:'فول مدمس', desc:'400 غرام', price:10000, emoji:'🫘'},
+  {id:'halva', cat:'sweets', name:'حلاوة الجبن', desc:'500 غرام', price:45000, emoji:'🍯'},
+  {id:'baklava', cat:'sweets', name:'بقلاوة', desc:'500 غرام', price:55000, emoji:'🥮'},
+  {id:'kunafa', cat:'sweets', name:'كنافة', desc:'500 غرام', price:40000, emoji:'🍮'},
+  {id:'maamoul', cat:'sweets', name:'معتمر', desc:'500 غرام', price:35000, emoji:'🍪'},
+  {id:'dates', cat:'sweets', name:'تمر مجدول', desc:'1 كيلو غرام', price:60000, emoji:'🌴'},
+  {id:'honey', cat:'sweets', name:'عسل طبيعي', desc:'500 غرام', price:75000, emoji:'🍯'},
+  {id:'jam', cat:'sweets', name:'مربى فراولة', desc:'400 غرام', price:18000, emoji:'🍓'},
+  {id:'tahini', cat:'sweets', name:'طحينة', desc:'500 غرام', price:25000, emoji:'🥜'},
+  {id:'molasses', cat:'sweets', name:'دبس رمان', desc:'500 مل', price:22000, emoji:'🍇'},
+  {id:'pomegranate', cat:'sweets', name:'دبس فليفلة', desc:'650 غرام', price:20000, emoji:'🌶️'},
+  {id:'halloumi', cat:'cheese', name:'جبنة حلوم', desc:'500 غرام', price:55000, emoji:'🧀'},
+  {id:'shanklish', cat:'cheese', name:'جبنة شلل', desc:'500 غرام', price:45000, emoji:'🧀'},
+  {id:'baladi', cat:'cheese', name:'جبنة بلدية', desc:'500 غرام', price:35000, emoji:'🧀'},
+  {id:'labneh', cat:'cheese', name:'لبنة بقري', desc:'400 غرام', price:28000, emoji:'🥛'},
+  {id:'kashkaval', cat:'cheese', name:'جبنة قشقوان', desc:'500 غرام', price:60000, emoji:'🧀'},
+  {id:'mortadella', cat:'cheese', name:'مرتديلا', desc:'500 غرام', price:35000, emoji:'🥩'},
+  {id:'pastirma', cat:'cheese', name:'بسطرمة', desc:'300 غرام', price:75000, emoji:'🥩'},
+  {id:'sujuk', cat:'cheese', name:'سجق', desc:'500 غرام', price:45000, emoji:'🌭'},
+  {id:'lahmacun', cat:'cheese', name:'لحم بعجين', desc:'4 قطع', price:30000, emoji:'🥟'},
+  {id:'kibbeh', cat:'cheese', name:'كبة', desc:'500 غرام', price:40000, emoji:'🥟'},
+  {id:'zaatar', cat:'spices', name:'زعتر', desc:'250 غرام', price:12000, emoji:'🌿'},
+  {id:'cumin', cat:'spices', name:'كمون', desc:'250 غرام', price:10000, emoji:'🧂'},
+  {id:'paprika', cat:'spices', name:'بابريكا', desc:'250 غرام', price:12000, emoji:'🌶️'},
+  {id:'cinnamon', cat:'spices', name:'قرفة', desc:'250 غرام', price:15000, emoji:'🫚'},
+  {id:'blackpepper', cat:'spices', name:'فلفل أسود', desc:'250 غرام', price:14000, emoji:'🌶️'},
+  {id:'sumac', cat:'spices', name:'سماق', desc:'250 غرام', price:18000, emoji:'🍋'},
+  {id:'baharat', cat:'spices', name:'بهارات مشكلة', desc:'250 غرام', price:16000, emoji:'🧂'},
+  {id:'turmeric', cat:'spices', name:'كركم', desc:'250 غرام', price:10000, emoji:'🟡'},
+  {id:'cardamom', cat:'spices', name:'هيل', desc:'100 غرام', price:35000, emoji:'🌿'},
+  {id:'saffron', cat:'spices', name:'زعفران', desc:'5 غرام', price:95000, emoji:'🌺'},
+  {id:'tomato', cat:'fruits', name:'بندورة', desc:'1 كيلو غرام', price:8000, emoji:'🍅'},
+  {id:'cucumber', cat:'fruits', name:'خيار', desc:'1 كيلو غرام', price:6000, emoji:'🥒'},
+  {id:'onion', cat:'fruits', name:'بصل', desc:'1 كيلو غرام', price:5000, emoji:'🧅'},
+  {id:'garlic', cat:'fruits', name:'ثوم', desc:'500 غرام', price:12000, emoji:'🧄'},
+  {id:'potato', cat:'fruits', name:'بطاطا', desc:'2 كيلو غرام', price:10000, emoji:'🥔'},
+  {id:'eggplant', cat:'fruits', name:'باذنجان', desc:'1 كيلو غرام', price:7000, emoji:'🍆'},
+  {id:'zucchini', cat:'fruits', name:'كوسا', desc:'1 كيلو غرام', price:8000, emoji:'🥒'},
+  {id:'lemon', cat:'fruits', name:'ليمون', desc:'1 كيلو غرام', price:12000, emoji:'🍋'},
+  {id:'apple', cat:'fruits', name:'تفاح أحمر', desc:'1 كيلو غرام', price:18000, emoji:'🍎'},
+  {id:'banana', cat:'fruits', name:'موز', desc:'1 كيلو غرام', price:15000, emoji:'🍌'}
+];
+
+let cart = {};
+let customerLocation = null;
+
+function renderProducts(category = 'all') {
+  const grid = document.getElementById('productsGrid');
+  const filtered = category === 'all' ? products : products.filter(p => p.cat === category);
+  grid.innerHTML = filtered.map(p => {
+    const qty = cart[p.id] || 0;
+    return `
+    <div class="card" id="card-${p.id}" data-cat="${p.cat}">
+      <div class="card-img">
+        <span class="emoji-icon">${p.emoji}</span>
+        ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
+      </div>
+      <div class="card-body">
+        <h3>${p.name}</h3>
+        <p class="desc">${p.desc}</p>
+        <div class="card-foot">
+          <div class="price">${p.price.toLocaleString()}<small> ل.س</small></div>
+          <div class="qty-control">
+            <button class="qty-btn" onclick="changeQty('${p.id}',-1)">−</button>
+            <span class="qty-val" id="qty-${p.id}">${qty}</span>
+            <button class="qty-btn" onclick="changeQty('${p.id}',1)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+document.querySelectorAll('.cat-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderProducts(btn.dataset.cat);
+  });
+});
+
+function changeQty(id, delta) {
+  cart[id] = Math.max(0, (cart[id] || 0) + delta);
+  const qtyEl = document.getElementById(`qty-${id}`);
+  if (qtyEl) qtyEl.textContent = cart[id];
+  updateSummary();
+}
+
+function updateSummary() {
+  let total = 0;
+  let count = 0;
+  for (const p of products) {
+    const qty = cart[p.id] || 0;
+    total += qty * p.price;
+    count += qty;
+  }
+  document.getElementById('sumItems').textContent = `المنتجات: ${count}`;
+  document.getElementById('sumTotal').textContent = `${total.toLocaleString()} ل.س`;
+  document.getElementById('sumTotalBig').textContent = `${total.toLocaleString()} ل.س`;
+  document.getElementById('sendBtn').disabled = !(count > 0 && document.getElementById('customerName').value.trim() !== '');
+}
+
+function getLocation() {
+  const btn = document.getElementById('locationBtn');
+  const status = document.getElementById('locationStatus');
+  if (!navigator.geolocation) {
+    status.textContent = 'متصفحك لا يدعم تحديد الموقع';
+    status.className = 'location-status error';
+    return;
+  }
+  btn.disabled = true;
+  status.textContent = 'جاري تحديد موقعك...';
+  status.className = 'location-status';
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      customerLocation = {
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+        url: `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`
+      };
+      status.textContent = `✓ تم تحديد موقعك: ${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`;
+      status.className = 'location-status success';
+      btn.disabled = false;
+    },
+    (err) => {
+      status.textContent = 'تعذر تحديد الموقع — تأكد من السماح بالوصول';
+      status.className = 'location-status error';
+      btn.disabled = false;
+    },
+    { enableHighAccuracy: true, timeout: 10000 }
+  );
+}
+
+function populateDays() {
+  const sel = document.getElementById('daySelect');
+  const today = new Date().getDay();
+  const dayNames = ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  for (let i = 0; i < 7; i++) {
+    const idx = (today + i) % 7;
+    const d = new Date(); d.setDate(d.getDate() + i);
+    const ds = `${d.getDate()}/${d.getMonth()+1}`;
+    const label = i === 0 ? `اليوم (${dayNames[idx]})` : i === 1 ? `غداً (${dayNames[idx]})` : `${dayNames[idx]} ${ds}`;
+    sel.innerHTML += `<option value="${idx}_${d.toISOString().split('T')[0]}">${label}</option>`;
+  }
+}
+
+function populateTimes() {
+  const sel = document.getElementById('timeSelect');
+  for (let h = 8; h <= 22; h++) {
+    for (let m = 0; m < 60; m += 30) {
+      const t = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+      sel.innerHTML += `<option value="${t}">${t}</option>`;
+    }
+  }
+}
+
+function sendOrder() {
+  const name = document.getElementById('customerName').value.trim();
+  const phone = document.getElementById('customerPhone').value.trim();
+  const dayOpt = document.getElementById('daySelect').selectedOptions[0].text;
+  const time = document.getElementById('timeSelect').value;
+  let msg = `🛒 *طلب جديد — سناك بوينت*\n\n`;
+  msg += `👤 الاسم: ${name}\n`;
+  if (phone) msg += `📱 الهاتف: ${phone}\n`;
+  msg += `📅 الموعد: ${dayOpt} الساعة ${time}\n\n`;
+  if (customerLocation) {
+    msg += `📍 *موقع العميل:*\n${customerLocation.url}\n\n`;
+  }
+  msg += `📦 *المنتجات:*\n`;
+  let total = 0;
+  for (const p of products) {
+    const qty = cart[p.id] || 0;
+    if (qty > 0) {
+      const sub = qty * p.price;
+      total += sub;
+      msg += `${p.emoji} ${p.name}: ${qty} × ${p.price.toLocaleString()} ل.س = ${sub.toLocaleString()} ل.س\n`;
+    }
+  }
+  msg += `\n💰 *المجموع: ${total.toLocaleString()} ل.س*`;
+  msg += `\n\n— أُرسل من موقع سناك بوينت`;
+  window.open(`https://wa.me/491621356262?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+document.getElementById('customerName').addEventListener('input', updateSummary);
+document.getElementById('customerPhone').addEventListener('input', updateSummary);
+renderProducts();
+populateDays();
+populateTimes();
+updateSummary();
+</script>
+</body>
+</html>
