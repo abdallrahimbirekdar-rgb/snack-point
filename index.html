@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#25d366">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<title>ماركت البيرقدار — طلب مشترياتك السورية</title>
+<title>ماركت داريا الحديثة — طلب مشترياتك السورية</title>
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
@@ -292,7 +292,7 @@ footer .fine{font-size:.78rem;opacity:.5;margin-top:18px}
 <nav>
   <div class="logo">
     <img src="logo.svg" alt="شعار سوريا">
-    <span>ماركت <span style="color:var(--gold)">البيرقدار</span></span>
+    <span>ماركت <span style="color:var(--gold)">داريا الحديثة</span></span>
   </div>
   <ul>
     <li class="nav-btns">
@@ -305,7 +305,7 @@ footer .fine{font-size:.78rem;opacity:.5;margin-top:18px}
 <header class="hero">
   <div class="hero-inner">
     <span class="kicker">توصيل مجاني للطلبات فوق 50,000 ل.س</span>
-    <h1 class="logo-hero"><img src="logo.svg" alt="شعار سوريا"><br>ماركت <span class="brand-alt">البيرقدار</span></h1>
+    <h1 class="logo-hero"><img src="logo.svg" alt="شعار سوريا"><br>ماركت <span class="brand-alt">داريا الحديثة</span></h1>
     <p class="sub">متجرك العربي — بقالة، مقبلات، حلويات، ومشروبات. اطلب الآن واستلم لباب بيتك.</p>
     <div class="loyalty-badge">⭐ اكسب نقاط مع كل شراء</div>
   </div>
@@ -382,9 +382,9 @@ footer .fine{font-size:.78rem;opacity:.5;margin-top:18px}
 </section>
 
 <footer>
-  <div class="f-logo"><img src="logo.svg" alt="شعار سوريا"><br>ماركت <span style="color:var(--gold)">البيرقدار</span></div>
+  <div class="f-logo"><img src="logo.svg" alt="شعار سوريا"><br>ماركت <span style="color:var(--gold)">داريا الحديثة</span></div>
   <p>متجرك العربي — بقالة، مقبلات، حلويات، ومشروبات. التوصيل لباب البيت.</p>
-  <p class="fine">© 2026 ماركت البيرقدار — موقع تجريبي</p>
+  <p class="fine">© 2026 ماركت داريا الحديثة — موقع تجريبي</p>
 </footer>
 
 <script>
@@ -807,7 +807,7 @@ function sendOrder() {
   const time = document.getElementById('timeSelect').value;
   const orderId = 'ORD-' + Date.now().toString(36).toUpperCase();
   
-  let msg = `🛒 *طلب جديد — ماركت البيرقدار*\n\n`;
+  let msg = `🛒 *طلب جديد — ماركت داريا الحديثة*\n\n`;
   msg += `👤 الاسم: ${name}\n`;
   if (phone) msg += `📱 الهاتف: ${phone}\n`;
   msg += `📅 الموعد: ${dayOpt} الساعة ${time}\n`;
@@ -836,7 +836,7 @@ function sendOrder() {
   }
   
   msg += `\n💰 *المجموع: ${total.toLocaleString()} ل.س*`;
-  msg += `\n\n— أُرسل من موقع ماركت البيرقدار`;
+  msg += `\n\n— أُرسل من موقع ماركت داريا الحديثة`;
   
   // Show confirmation
   document.getElementById('orderIdDisplay').textContent = orderId;
@@ -853,7 +853,7 @@ function closeConfirm() {
 
 // ========== SHARE ==========
 function shareWhatsapp() {
-  const text = '🛒 تابع ماركت البيرقدار — متجرك العربي للبقالة والمشروبات!';
+  const text = '🛒 تابع ماركت داريا الحديثة — متجرك العربي للبقالة والمشروبات!';
   window.open(`https://wa.me/?text=${encodeURIComponent(text + '\n' + window.location.href)}`, '_blank');
 }
 
