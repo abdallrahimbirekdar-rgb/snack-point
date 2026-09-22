@@ -1,10 +1,12 @@
-const CACHE_NAME = 'birgado-market-v1';
+const CACHE_NAME = 'birgado-market-v2';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/sw.js',
-  '/logo.svg'
+  '/snack-point/',
+  '/snack-point/index.html',
+  '/snack-point/manifest.json',
+  '/snack-point/sw.js',
+  '/snack-point/logo.svg',
+  '/snack-point/icons/icon-192.png',
+  '/snack-point/icons/icon-512.png'
 ];
 
 self.addEventListener('install', (e) => {
