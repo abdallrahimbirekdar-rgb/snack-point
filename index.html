@@ -166,7 +166,7 @@ footer .fine{font-size:.78rem;opacity:.5;margin-top:18px}
 
 <script>
 const products = [
-  {id:'cola', cat:'drinks', name:'كوكاكولا كلاسيك', desc:'عبوة 12 علبة 330مل', price:85000, emoji:'🥤', badge:'الأكثر مبيعاً'},
+  {id:'cola', cat:'drinks', name:'كوكاكولا كلاسيك', desc:'عبوة 12 علبة 330مل', price:85000, img:'coca-cola.png', badge:'الأكثر مبيعاً'},
   {id:'zero', cat:'drinks', name:'كوكاكولا زيرو', desc:'بدون سكر، عبوة 12 علبة', price:85000, emoji:'🧊'},
   {id:'7up', cat:'drinks', name:'7Up', desc:'علبة 330مل', price:15000, emoji:'🍋'},
   {id:'fanta', cat:'drinks', name:'فانتا برتقال', desc:'علبة 330مل', price:15000, emoji:'🍊'},
@@ -248,10 +248,11 @@ function renderProducts(category = 'all') {
   const filtered = category === 'all' ? products : products.filter(p => p.cat === category);
   grid.innerHTML = filtered.map(p => {
     const qty = cart[p.id] || 0;
+    const icon = p.img ? `<img src="${p.img}" alt="${p.name}" style="max-width:85%;max-height:85%;object-fit:contain">` : `<span class="emoji-icon">${p.emoji}</span>`;
     return `
     <div class="card" id="card-${p.id}" data-cat="${p.cat}">
       <div class="card-img">
-        <span class="emoji-icon">${p.emoji}</span>
+        ${icon}
         ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
       </div>
       <div class="card-body">
