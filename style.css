@@ -102,4 +102,4 @@
 
 /* Allow the category rows to scroll as one strip. */
 .catalog .tabs{min-width:0;flex:1}
-.category-quick-inner,.catalog .tabs{scroll-behavior:smooth;touch-action:pan-x}
+.category-quick-inner,.catalog .tabs{scroll-behavior:smooth}
