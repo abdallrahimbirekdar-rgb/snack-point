@@ -63,3 +63,28 @@ function response_(status) {
   return ContentService.createTextOutput(JSON.stringify({status}))
     .setMimeType(ContentService.MimeType.JSON);
 }
+
+/**
+ * Read-only public catalog for the storefront. Never include order tabs here.
+ * The script URL is public, so only product columns A:H are returned.
+ */
+function doGet(e) {
+  const callback = String((e && e.parameter && e.parameter.callback) || '');
+  if (callback !== 'baladnaCatalogLoaded') {
+    return ContentService.createTextOutput('Invalid request');
+  }
+  const sheet = SpreadsheetApp.openById('1mR6mDkEC7BDbHRRZAAnyuhBTwdbRDAL1UrOM3ooKcNY')
+    .getSheetByName('إدارة المنتجات');
+  const data = sheet.getLastRow() > 1
+    ? sheet.getRange(2, 1, Math.min(sheet.getLastRow() - 1, 499), 8).getValues()
+    : [];
+  const categories = {'مشروبات':'drinks','بقالة':'grocery','مقبلات':'appetizers',
+    'حلويات':'sweets','أجبان ولحوم':'cheese','بهارات':'spices','خضار وفواكه':'fruits'};
+  const products = data.filter(row => row[7] === true && categories[row[1]])
+    .map(row => ({id:Number(row[0]),cat:categories[row[1]],name:String(row[2]||''),
+      desc:String(row[3]||''),price:Number(row[4]),emoji:String(row[5]||''),
+      image:String(row[6]||'')}));
+  const json = JSON.stringify({products});
+  return ContentService.createTextOutput(callback + '(' + json + ');')
+    .setMimeType(ContentService.MimeType.JAVASCRIPT);
+}
