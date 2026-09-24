@@ -30,3 +30,16 @@
 .product .product-art:has(.product-photo){background:#f0efe9}.product .product-art:has(.product-photo[src="coca-cola-can.webp"]){background:#252827}.product-art .product-photo{width:100%;height:100%;object-fit:cover}.product-art .product-photo.contain{object-fit:contain}
 .header-actions{display:flex;align-items:center;gap:10px}.language-switcher{display:flex;direction:ltr;border:1px solid #d7dfd7;border-radius:100px;padding:3px;background:#f5f7f3}.language-switcher button{border:0;background:transparent;color:#60736b;border-radius:100px;min-width:31px;height:31px;padding:0 7px;font-size:11px;font-weight:700}.language-switcher button.active{background:var(--green);color:white;box-shadow:0 2px 7px #123b3530}.steps i{font-style:normal}.ltr .cart-drawer{left:auto;right:0;transform:translateX(105%);box-shadow:-15px 0 35px #0002}.ltr .cart-drawer.open{transform:translateX(0)}.ltr .rating{text-align:left}.ltr .eyebrow:before{margin-left:0;margin-right:8px}
 @media(max-width:720px){.header-actions{gap:5px}.language-switcher{padding:2px}.language-switcher button{min-width:27px;height:27px;padding:0 5px;font-size:10px}.cart-button{padding:8px 10px}.bag-icon{display:none}}
+
+/* Prominent category navigation. */
+.category-quick-nav{background:#103d35;border-bottom:3px solid #e6b968;box-shadow:0 7px 22px #0a281e2b;position:relative;z-index:19}
+.category-quick-inner{display:flex;gap:10px;align-items:center;padding:12px 0;overflow-x:auto;scrollbar-width:none}
+.category-quick-inner::-webkit-scrollbar{display:none}
+.category-quick-inner button{flex:0 0 auto;border:1px solid #eac98b88;background:#fffdf3;color:#123b35;border-radius:13px;padding:11px 19px;min-height:52px;font-weight:700;font-size:17px;white-space:nowrap;box-shadow:0 3px 0 #06251b40;transition:transform .2s,background .2s,box-shadow .2s}
+.category-quick-inner button:hover,.category-quick-inner button.active{background:#f1c77f;border-color:#f1c77f;transform:translateY(-2px);box-shadow:0 5px 13px #061c1766}
+.category-quick-inner button:focus-visible,.tabs button:focus-visible{outline:3px solid #f7d990;outline-offset:3px}
+.catalog .tabs{gap:11px;padding:5px 2px 9px}
+.catalog .tabs button{font-size:17px;font-weight:700;min-height:51px;padding:11px 21px;border:2px solid #f0d6a2;background:#fffdf5;color:#174438;box-shadow:0 5px 13px #08281f35}
+.catalog .tabs button:hover,.catalog .tabs button.active{background:#efc37a;border-color:#efc37a;color:#17372f;transform:translateY(-2px)}
+@media(max-width:720px){.category-quick-inner{padding:9px 0;gap:8px}.category-quick-inner button{font-size:16px;min-height:48px;padding:9px 16px}.catalog .tabs button{font-size:16px;min-height:48px;padding:9px 17px}}
+@media(prefers-reduced-motion:reduce){.category-quick-inner button,.catalog .tabs button{transition:none}}
