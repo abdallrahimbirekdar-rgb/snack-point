@@ -46,30 +46,62 @@ main{max-width:1160px;margin:auto;padding:25px 20px 70px}
 <label>السعر بالليرة السورية *<input name="price" type="number" min="0" max="1000000000" step="1" inputmode="numeric" required></label>
 <label class="full">الوصف<textarea name="description" maxlength="250"></textarea></label>
 <label>رمز المنتج (اختياري)<input name="emoji" maxlength="8" placeholder="🛒"></label>
-<label class="full">الصورة<input name="image" placeholder="https://… أو اسم ملف موجود في الموقع"><p class="help">ألصق رابط صورة يبدأ بـ https، أو اكتب اسم صورة مرفوعة إلى موقعك.</p></label>
+<label class="full">اختر صورة من جهازك<input id="imageFile" type="file" accept="image/*"><p class="help" id="fileStatus">ستُصغَّر الصورة تلقائيًا قبل الحفظ. الصور المرفوعة ستظهر للزبائن.</p></label>
+<label class="full">أو ضع رابط صورة (اختياري)<input name="image" placeholder="https://… أو اسم ملف موجود في الموقع"></label>
 <label class="full check"><input name="visible" type="checkbox" checked><span>إظهار المنتج في المتجر</span></label></div>
 <div class="panel-actions"><button class="secondary" id="cancel" type="button">إلغاء</button><button class="primary" id="save" type="submit">حفظ المنتج</button></div></form></div>
 <div class="toast" id="toast" role="status" hidden></div>
 <script>
 (function(){
 'use strict';
-var products=[],editingId=null,busy=false;
+var products=[],editingId=null,editingImage='',pickedImage='',photoData={},busy=false;
 var grid=document.getElementById('grid'),notice=document.getElementById('notice'),summary=document.getElementById('summary');
 var overlay=document.getElementById('overlay'),form=document.getElementById('form'),save=document.getElementById('save');
 var search=document.getElementById('search'),filter=document.getElementById('filter');
 function showToast(message){var t=document.getElementById('toast');t.textContent=message;t.hidden=false;clearTimeout(showToast.timer);showToast.timer=setTimeout(function(){t.hidden=true},3500)}
-function server(method,data){return new Promise(function(resolve,reject){var call=google.script.run.withSuccessHandler(resolve).withFailureHandler(reject);if(method==='list')call.listProducts();else call.saveProduct(data)})}
-function photoUrl(value){if(/^https:\/\/[^\s"'<>]+$/i.test(value||''))return value;if(/^[a-z0-9][a-z0-9._-]*\.(webp|png|jpe?g)$/i.test(value||''))return 'https://abdallrahimbirekdar-rgb.github.io/snack-point/'+value;return ''}
+function server(method,data){return new Promise(function(resolve,reject){var call=google.script.run.withSuccessHandler(resolve).withFailureHandler(reject);if(method==='list')call.listProducts();else if(method==='photos')call.listProductPhotos();else call.saveProduct(data)})}
+function photoUrl(value){if(/^photo:\d+$/.test(value||''))return photoData[value.slice(6)]||'';if(/^https:\/\/[^\s"'<>]+$/i.test(value||''))return value;if(/^[a-z0-9][a-z0-9._-]*\.(webp|png|jpe?g)$/i.test(value||''))return 'https://abdallrahimbirekdar-rgb.github.io/snack-point/'+value;return ''}
 function element(tag,className,text){var el=document.createElement(tag);if(className)el.className=className;if(text!==undefined)el.textContent=text;return el}
 function draw(){var q=search.value.trim().toLowerCase(),c=filter.value;var list=products.filter(function(p){return (!c||p.category===c)&&(!q||(p.name+' '+p.description).toLowerCase().includes(q))});summary.textContent=list.length+' منتج من أصل '+products.length;grid.replaceChildren();if(!list.length){grid.append(element('div','empty','لا توجد منتجات مطابقة.'));return}list.forEach(function(p){var card=element('article','card'+(p.visible?'':' off'));var art=element('div','photo');var url=photoUrl(p.image);if(url){var img=document.createElement('img');img.src=url;img.alt=p.name;img.loading='lazy';img.onerror=function(){art.replaceChildren(element('span','',p.emoji||'🛒'))};art.append(img)}else art.append(element('span','',p.emoji||'🛒'));card.append(art);
 var body=element('div','card-body');body.append(element('span','category',p.category+' · #'+p.id));body.append(element('h3','',p.name));body.append(element('p','desc',p.description||' '));body.append(element('div','price',Number(p.price).toLocaleString('en-US')+' ل.س'));body.append(element('span','status-pill',p.visible?'ظاهر في المتجر':'مخفي'));
 var actions=element('div','actions');var edit=element('button','','تعديل');edit.type='button';edit.onclick=function(){openForm(p)};var toggle=element('button',p.visible?'hide':'',p.visible?'إخفاء':'إظهار');toggle.type='button';toggle.onclick=function(){if(busy)return;busy=true;toggle.disabled=true;var next=Object.assign({},p,{visible:!p.visible});server('save',next).then(function(){showToast(next.visible?'ظهر المنتج في المتجر.':'أُخفي المنتج من المتجر.');load()}).catch(function(err){showToast('تعذّر الحفظ: '+err.message);busy=false;toggle.disabled=false})};actions.append(edit,toggle);body.append(actions);card.append(body);grid.append(card)})}
-function load(){notice.hidden=false;notice.className='notice';notice.textContent='جارٍ تحميل المنتجات…';server('list').then(function(data){products=Array.isArray(data)?data:[];busy=false;notice.hidden=true;draw()}).catch(function(err){busy=false;notice.hidden=false;notice.className='notice error';notice.textContent='تعذّر تحميل المنتجات: '+err.message})}
-function openForm(p){editingId=p?p.id:null;form.reset();form.elements.name.value=p?p.name:'';form.elements.category.value=p?p.category:'';form.elements.price.value=p?p.price:'';form.elements.description.value=p?p.description:'';form.elements.emoji.value=p?p.emoji:'';form.elements.image.value=p?p.image:'';form.elements.visible.checked=p?p.visible:true;document.getElementById('formTitle').textContent=p?'تعديل: '+p.name:'إضافة منتج';overlay.hidden=false;document.body.style.overflow='hidden';form.elements.name.focus()}
+function load(){notice.hidden=false;notice.className='notice';notice.textContent='جارٍ تحميل المنتجات…';server('list').then(function(data){products=Array.isArray(data)?data:[];busy=false;notice.hidden=true;draw();server('photos').then(function(data){photoData=data||{};draw()}).catch(function(){})}).catch(function(err){busy=false;notice.hidden=false;notice.className='notice error';notice.textContent='تعذّر تحميل المنتجات: '+err.message})}
+function openForm(p){editingId=p?p.id:null;editingImage=p?p.image:'';pickedImage='';form.reset();document.getElementById('imageFile').value='';document.getElementById('fileStatus').textContent='ستُصغَّر الصورة تلقائيًا قبل الحفظ. الصور المرفوعة ستظهر للزبائن.';form.elements.name.value=p?p.name:'';form.elements.category.value=p?p.category:'';form.elements.price.value=p?p.price:'';form.elements.description.value=p?p.description:'';form.elements.emoji.value=p?p.emoji:'';form.elements.image.value=p&&p.image.indexOf('photo:')!==0?p.image:'';form.elements.visible.checked=p?p.visible:true;document.getElementById('formTitle').textContent=p?'تعديل: '+p.name:'إضافة منتج';overlay.hidden=false;document.body.style.overflow='hidden';form.elements.name.focus()}
 function closeForm(){overlay.hidden=true;document.body.style.overflow=''}
 document.getElementById('add').onclick=function(){openForm(null)};document.getElementById('close').onclick=closeForm;document.getElementById('cancel').onclick=closeForm;overlay.addEventListener('click',function(e){if(e.target===overlay)closeForm()});
 search.addEventListener('input',draw);filter.addEventListener('change',draw);
-form.addEventListener('submit',function(e){e.preventDefault();if(busy)return;var data={id:editingId,name:form.elements.name.value,category:form.elements.category.value,price:form.elements.price.value,description:form.elements.description.value,emoji:form.elements.emoji.value,image:form.elements.image.value,visible:form.elements.visible.checked};busy=true;save.disabled=true;save.textContent='جارٍ الحفظ…';server('save',data).then(function(result){closeForm();showToast(result.message);load()}).catch(function(err){showToast('تعذّر الحفظ: '+err.message)}).finally(function(){busy=false;save.disabled=false;save.textContent='حفظ المنتج'})});
+form.addEventListener('submit',function(e){e.preventDefault();if(busy)return;var data={id:editingId,name:form.elements.name.value,category:form.elements.category.value,price:form.elements.price.value,description:form.elements.description.value,emoji:form.elements.emoji.value,image:pickedImage?'':(form.elements.image.value.trim()||editingImage),imageData:pickedImage,visible:form.elements.visible.checked};busy=true;save.disabled=true;save.textContent='جارٍ الحفظ…';server('save',data).then(function(result){closeForm();showToast(result.message);load()}).catch(function(err){showToast('تعذّر الحفظ: '+err.message)}).finally(function(){busy=false;save.disabled=false;save.textContent='حفظ المنتج'})});
+
+function compressImage(file){
+ return new Promise(function(resolve,reject){
+  if(!file.type.startsWith('image/')||file.size>15000000){reject(new Error('اختر صورة بحجم أقل من 15 ميغابايت.'));return}
+  var objectUrl=URL.createObjectURL(file),img=new Image();
+  img.onload=function(){
+   URL.revokeObjectURL(objectUrl);
+   var sizes=[480,400,320,260],qualities=[.82,.7,.55,.42];
+   for(var i=0;i<sizes.length;i++){
+    var scale=Math.min(1,sizes[i]/Math.max(img.width,img.height));
+    var canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));
+    var ctx=canvas.getContext('2d');ctx.drawImage(img,0,0,canvas.width,canvas.height);
+    for(var j=0;j<qualities.length;j++){
+     var data=canvas.toDataURL('image/webp',qualities[j]);
+     if(data.indexOf('data:image/webp;')!==0){ctx.globalCompositeOperation='destination-over';ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);data=canvas.toDataURL('image/jpeg',qualities[j])}
+     if(data.length<=42000){resolve(data);return}
+    }
+   }
+   reject(new Error('تعذّر تصغير الصورة بما يكفي. اختر صورة أبسط.'))
+  };
+  img.onerror=function(){URL.revokeObjectURL(objectUrl);reject(new Error('تعذّر قراءة الصورة.'))};
+  img.src=objectUrl;
+ })
+}
+document.getElementById('imageFile').addEventListener('change',function(){
+ var file=this.files&&this.files[0],status=document.getElementById('fileStatus');
+ if(!file){pickedImage='';return}
+ status.textContent='جارٍ تجهيز الصورة…';save.disabled=true;
+ compressImage(file).then(function(data){pickedImage=data;status.textContent='الصورة جاهزة: '+file.name+' — اضغط حفظ المنتج.';form.elements.image.value=''}).catch(function(err){pickedImage='';status.textContent=err.message;showToast(err.message)}).finally(function(){save.disabled=false})
+});
+form.elements.image.addEventListener('input',function(){if(this.value.trim()){pickedImage='';document.getElementById('imageFile').value='';document.getElementById('fileStatus').textContent='سيُستخدم رابط الصورة المكتوب.'}});
 load();
 })();
 </script>
