@@ -45,7 +45,10 @@ function saveProduct(input) {
     throw new Error('اكتب سعرًا صحيحًا بالليرة السورية.');
   const emoji = cleanText_(input.emoji, 8);
   const image = String(input.image || '').trim();
-  if (image && !/^https:\/\/[^\s"'<>]+$/i.test(image) &&
+  const imageData = String(input.imageData || '');
+  if (imageData && (!/^data:image\/(webp|jpeg);base64,[A-Za-z0-9+/=]+$/.test(imageData) ||
+      imageData.length > 42000)) throw new Error('الصورة كبيرة. اختر صورة أصغر.');
+  if (image && !/^photo:\d+$/.test(image) && !/^https:\/\/[^\s"'<>]+$/i.test(image) &&
       !/^[a-z0-9][a-z0-9._-]*\.(webp|png|jpe?g)$/i.test(image))
     throw new Error('الصورة تحتاج رابط https أو اسم ملف صورة موجود في الموقع.');
   const visible = input.visible === true;
@@ -69,12 +72,46 @@ function saveProduct(input) {
       if (index < 0) throw new Error('لم أجد المنتج. أعد تحميل الصفحة.');
       rowNumber = index + 2;
     }
+    if (imageData) savePhoto_(id, imageData);
     sheet.getRange(rowNumber, 1, 1, 8)
-      .setValues([[id, category, name, description, price, emoji, image, visible]]);
+      .setValues([[id, category, name, description, price, emoji,
+        imageData ? 'photo:' + id : image, visible]]);
     SpreadsheetApp.flush();
     return { id, message: input.id === null || input.id === undefined || input.id === ''
       ? 'تمت إضافة المنتج.' : 'تم حفظ التعديل.' };
   } finally {
     lock.releaseLock();
   }
+}
+
+function photoSheet_() {
+  const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+  let sheet = spreadsheet.getSheetByName('صور المنتجات');
+  if (!sheet) {
+    sheet = spreadsheet.insertSheet('صور المنتجات');
+    sheet.getRange(1, 1, 1, 2).setValues([['رقم المنتج', 'بيانات الصورة']]);
+    sheet.setFrozenRows(1);
+    sheet.hideSheet();
+  }
+  return sheet;
+}
+
+function savePhoto_(id, imageData) {
+  const sheet = photoSheet_();
+  const last = sheet.getLastRow();
+  const ids = last > 1 ? sheet.getRange(2, 1, last - 1, 1).getValues() : [];
+  const index = ids.findIndex(row => Number(row[0]) === id);
+  const row = index < 0 ? last + 1 : index + 2;
+  sheet.getRange(row, 1, 1, 2).setValues([[id, imageData]]);
+}
+
+function listProductPhotos() {
+  const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName('صور المنتجات');
+  if (!sheet || sheet.getLastRow() < 2) return {};
+  const photos = {};
+  sheet.getRange(2, 1, sheet.getLastRow() - 1, 2).getValues().forEach(row => {
+    if (Number.isInteger(Number(row[0])) && /^data:image\/(webp|jpeg);base64,/.test(String(row[1])))
+      photos[String(row[0])] = String(row[1]);
+  });
+  return photos;
 }
