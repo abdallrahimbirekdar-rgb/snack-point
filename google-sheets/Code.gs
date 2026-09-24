@@ -70,13 +70,15 @@ function response_(status) {
  */
 function doGet(e) {
   const callback = String((e && e.parameter && e.parameter.callback) || '');
-  if (callback !== 'baladnaCatalogLoaded') {
+  const photosRequest = String((e && e.parameter && e.parameter.photos) || '') === '1';
+  if (callback !== (photosRequest ? 'baladnaPhotosLoaded' : 'baladnaCatalogLoaded')) {
     return ContentService.createTextOutput('Invalid request');
   }
+  if (photosRequest) return publicPhotos_(callback);
   const sheet = SpreadsheetApp.openById('1mR6mDkEC7BDbHRRZAAnyuhBTwdbRDAL1UrOM3ooKcNY')
     .getSheetByName('إدارة المنتجات');
   const data = sheet.getLastRow() > 1
-    ? sheet.getRange(2, 1, Math.min(sheet.getLastRow() - 1, 499), 8).getValues()
+    ? sheet.getRange(2, 1, sheet.getLastRow() - 1, 8).getValues()
     : [];
   const categories = {'مشروبات':'drinks','بقالة':'grocery','مقبلات':'appetizers',
     'حلويات':'sweets','أجبان ولحوم':'cheese','بهارات':'spices','خضار وفواكه':'fruits'};
@@ -86,5 +88,25 @@ function doGet(e) {
       image:String(row[6]||'')}));
   const json = JSON.stringify({products});
   return ContentService.createTextOutput(callback + '(' + json + ');')
+    .setMimeType(ContentService.MimeType.JAVASCRIPT);
+}
+
+function publicPhotos_(callback) {
+  const spreadsheet = SpreadsheetApp.openById('1mR6mDkEC7BDbHRRZAAnyuhBTwdbRDAL1UrOM3ooKcNY');
+  const catalog = spreadsheet.getSheetByName('إدارة المنتجات');
+  const photos = spreadsheet.getSheetByName('صور المنتجات');
+  const result = {};
+  if (catalog && photos && catalog.getLastRow() > 1 && photos.getLastRow() > 1) {
+    const visible = new Set();
+    catalog.getRange(2, 1, catalog.getLastRow() - 1, 8).getValues().forEach(row => {
+      if (row[7] === true && row[6] === 'photo:' + row[0]) visible.add(String(row[0]));
+    });
+    photos.getRange(2, 1, photos.getLastRow() - 1, 2).getValues().forEach(row => {
+      if (visible.has(String(row[0])) &&
+          /^data:image\/(webp|jpeg);base64,[A-Za-z0-9+/=]+$/.test(String(row[1])) &&
+          String(row[1]).length <= 42000) result[String(row[0])] = String(row[1]);
+    });
+  }
+  return ContentService.createTextOutput(callback + '(' + JSON.stringify(result) + ');')
     .setMimeType(ContentService.MimeType.JAVASCRIPT);
 }
