@@ -89,3 +89,7 @@
 @keyframes mascotWave{from{transform:rotate(-24deg) scaleX(.85)}to{transform:rotate(24deg) scaleX(1.12)}}
 @media(max-width:720px){.welcome-mascot{top:23vh;width:112px;height:112px}.mascot-person{font-size:65px}.mascot-flag{font-size:46px;right:-25px}}
 @media(prefers-reduced-motion:reduce){.welcome-mascot{display:none;animation:none}.mascot-flag{animation:none}}
+
+/* Use one site-owned flag image rather than the device's emoji artwork. */
+.mascot-flag{display:block;width:90px;height:60px;object-fit:cover;right:-58px;top:16px;border-radius:3px;box-shadow:0 4px 10px #001d1977}
+@media(max-width:720px){.mascot-flag{width:76px;height:51px;right:-49px;top:11px}}
