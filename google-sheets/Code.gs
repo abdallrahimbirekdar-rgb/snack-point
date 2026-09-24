@@ -1,6 +1,7 @@
 /**
  * Bound Google Apps Script for Baladna Market.
  * Create this script from the target Google Sheet (Extensions > Apps Script).
+ * Opens the order spreadsheet explicitly because active-file methods are unavailable in web apps.
  * Deploy as a web app running as you, accessible to anyone, then copy /exec URL.
  */
 const ORDER_HEADERS = ['وقت الاستلام','رقم الطلب','الاسم','الهاتف','اليوم','الساعة','رابط الموقع','المجموع قبل الخصم','الخصم','المجموع','عدد المنتجات'];
@@ -23,8 +24,7 @@ function doPost(e) {
     });
     const subtotal = items.reduce((sum, item) => sum + item.total, 0);
     const discount = Math.min(subtotal, Math.max(0, Number(data.discount) || 0));
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    if (!spreadsheet) throw new Error('Bind the script to a Google Sheet');
+    const spreadsheet = SpreadsheetApp.openById('1mR6mDkEC7BDbHRRZAAnyuhBTwdbRDAL1UrOM3ooKcNY');
     const lock = LockService.getScriptLock();
     lock.waitLock(10000);
     try {
