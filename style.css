@@ -100,7 +100,6 @@
 @keyframes confettiFall{0%{opacity:0;transform:translate3d(0,-20px,0) rotate(0deg)}8%{opacity:1}90%{opacity:1}100%{opacity:0;transform:translate3d(var(--drift),110vh,0) rotate(var(--spin))}}
 @media(prefers-reduced-motion:reduce){.confetti-layer{display:none}.confetti-piece{animation:none}}
 
-/* The category buttons drift horizontally while pulsing. */
-@keyframes categorySwayPulse{0%,100%{transform:translateX(-18px) scale(1)}22%{transform:translateX(18px) scale(1.3)}52%{transform:translateX(-18px) scale(.8)}76%{transform:translateX(18px) scale(1)}}
-.category-quick-inner button,.catalog .tabs button{animation-name:categorySwayPulse}
-@media(max-width:720px){@keyframes categorySwayPulse{0%,100%{transform:translateX(-12px) scale(1)}22%{transform:translateX(12px) scale(1.3)}52%{transform:translateX(-12px) scale(.8)}76%{transform:translateX(12px) scale(1)}}}
+/* Allow the category rows to scroll as one strip. */
+.catalog .tabs{min-width:0;flex:1}
+.category-quick-inner,.catalog .tabs{scroll-behavior:smooth;touch-action:pan-x}
