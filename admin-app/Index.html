@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>إدارة ماركت بلدنا</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;color:#153b35;background:#f4f7f4}
+*{box-sizing:border-box}body{margin:0;min-height:100vh}button,input,select,textarea{font:inherit}button{cursor:pointer}
+header{background:#103b35;color:#fff;padding:24px max(20px,calc((100vw - 1120px)/2));display:flex;align-items:center;justify-content:space-between;gap:14px}
+header h1{font-size:clamp(22px,4vw,32px);margin:0}header p{margin:5px 0 0;color:#d6e5dc;font-size:14px}
+header a{color:#fff;text-decoration:none;border:1px solid #8cb2a3;border-radius:12px;padding:10px 14px;white-space:nowrap}
+main{max-width:1160px;margin:auto;padding:25px 20px 70px}
+.intro{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:20px}.intro h2{font-size:23px;margin:0 0 4px}.intro p{color:#61756b;margin:0}
+.primary{background:#d99d46;color:#17332e;border:0;border-radius:13px;padding:12px 19px;font-weight:800;box-shadow:0 5px 12px #d99d4638}.primary:hover{background:#edb258}
+.toolbar{display:flex;gap:10px;margin-bottom:15px}.toolbar input,.toolbar select{border:1px solid #ccd9d1;border-radius:12px;padding:12px 14px;background:#fff;color:#173b35}.toolbar input{flex:1;min-width:0}.toolbar select{min-width:160px}
+.summary{color:#536c61;font-size:14px;margin:10px 2px 18px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:15px}
+.card{background:#fff;border:1px solid #e0e9e2;border-radius:18px;overflow:hidden;box-shadow:0 4px 18px #133b3510;display:flex;flex-direction:column}
+.photo{height:160px;background:#ecf3ee;display:flex;align-items:center;justify-content:center;font-size:54px}.photo img{width:100%;height:100%;object-fit:contain;padding:12px}
+.card-body{padding:15px;flex:1;display:flex;flex-direction:column}.category{font-size:12px;color:#4b7567;font-weight:700}.card h3{font-size:18px;margin:5px 0 6px}.desc{color:#62766c;font-size:13px;min-height:35px;margin:0}.price{font-size:20px;font-weight:800;margin-top:12px}.price small{font-size:12px;color:#63746c}
+.actions{display:flex;gap:8px;margin-top:15px}.actions button{flex:1;border:1px solid #d7e3da;background:#f7faf7;color:#153b35;border-radius:10px;padding:9px;font-weight:700}.actions button:hover{background:#e7f1e9}.actions .hide{color:#ae5141}.card.off{opacity:.68}.status-pill{font-size:12px;background:#e2f3e6;padding:4px 8px;border-radius:20px;color:#287247}.card.off .status-pill{background:#f2e8e2;color:#935742}
+.notice{border-radius:12px;padding:14px 18px;background:#eaf3ed;color:#215442;margin-bottom:16px}.notice.error{background:#fff0eb;color:#9b3a2f}
+.empty{text-align:center;background:#fff;border-radius:15px;padding:35px;color:#5d7468}
+.overlay{position:fixed;inset:0;background:#081f1bd0;display:grid;place-items:center;padding:16px;z-index:10}.overlay[hidden]{display:none}
+.panel{width:min(100%,600px);max-height:calc(100vh - 32px);overflow:auto;background:#fff;border-radius:20px;padding:22px;box-shadow:0 20px 60px #0004}
+.panel-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}.panel h2{margin:0;font-size:22px}
+.close{background:#eef3ee;border:0;border-radius:10px;width:38px;height:38px;font-size:25px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:13px}label{font-weight:700;font-size:13px;display:block}label input,label select,label textarea{width:100%;margin-top:6px;border:1px solid #cbd8cf;background:#fff;border-radius:11px;padding:11px;color:#183a34;outline-color:#64a283}label textarea{min-height:75px;resize:vertical}.full{grid-column:1/-1}
+.check{display:flex;align-items:center;gap:10px;background:#f1f7f2;padding:12px;border-radius:10px}.check input{width:20px;height:20px;margin:0}
+.help{font-weight:400;color:#688075;font-size:12px;margin:5px 0 0}.panel-actions{display:flex;gap:9px;justify-content:flex-end;margin-top:20px}.secondary{border:1px solid #d7e2d9;border-radius:12px;background:#fff;padding:11px 18px}
+.toast{position:fixed;bottom:20px;left:20px;right:20px;margin:auto;max-width:420px;background:#163d36;color:#fff;border-radius:13px;padding:13px 18px;text-align:center;box-shadow:0 8px 30px #0003;z-index:20}.toast[hidden]{display:none}
+@media(max-width:600px){header{padding:16px}header a{font-size:12px}main{padding:20px 14px 55px}.intro{align-items:stretch;flex-direction:column}.toolbar{flex-direction:column}.toolbar select{width:100%}.fields{grid-template-columns:1fr}.grid{grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px}.photo{height:115px}.card-body{padding:11px}.card h3{font-size:15px}.price{font-size:17px}.actions{flex-wrap:wrap}.actions button{font-size:12px;padding:7px}}
+</style>
+</head>
+<body>
+<header><div><h1>ماركت بلدنا</h1><p>لوحة إدارة المنتجات</p></div><a href="https://abdallrahimbirekdar-rgb.github.io/snack-point/" target="_blank" rel="noopener">عرض المتجر ↗</a></header>
+<main>
+<div class="intro"><div><h2>منتجاتك</h2><p>عدّل الأسعار والتفاصيل وظهور المنتجات بسهولة.</p></div><button class="primary" id="add" type="button">+ إضافة منتج</button></div>
+<div class="toolbar"><input id="search" type="search" placeholder="ابحث باسم المنتج..." aria-label="ابحث باسم المنتج"><select id="filter" aria-label="فلتر حسب القسم"><option value="">جميع الأقسام</option><option>مشروبات</option><option>بقالة</option><option>مقبلات</option><option>حلويات</option><option>أجبان ولحوم</option><option>بهارات</option><option>خضار وفواكه</option></select></div>
+<div class="notice" id="notice" role="status">جارٍ تحميل المنتجات…</div>
+<div class="summary" id="summary"></div><div class="grid" id="grid"></div>
+</main>
+<div class="overlay" id="overlay" hidden><form class="panel" id="form"><div class="panel-top"><h2 id="formTitle">تعديل المنتج</h2><button class="close" id="close" type="button" aria-label="إغلاق">×</button></div>
+<div class="fields"><label class="full">اسم المنتج *<input name="name" required maxlength="150"></label>
+<label>القسم *<select name="category" required><option value="">اختر القسم</option><option>مشروبات</option><option>بقالة</option><option>مقبلات</option><option>حلويات</option><option>أجبان ولحوم</option><option>بهارات</option><option>خضار وفواكه</option></select></label>
+<label>السعر بالليرة السورية *<input name="price" type="number" min="0" max="1000000000" step="1" inputmode="numeric" required></label>
+<label class="full">الوصف<textarea name="description" maxlength="250"></textarea></label>
+<label>رمز المنتج (اختياري)<input name="emoji" maxlength="8" placeholder="🛒"></label>
+<label class="full">الصورة<input name="image" placeholder="https://… أو اسم ملف موجود في الموقع"><p class="help">ألصق رابط صورة يبدأ بـ https، أو اكتب اسم صورة مرفوعة إلى موقعك.</p></label>
+<label class="full check"><input name="visible" type="checkbox" checked><span>إظهار المنتج في المتجر</span></label></div>
+<div class="panel-actions"><button class="secondary" id="cancel" type="button">إلغاء</button><button class="primary" id="save" type="submit">حفظ المنتج</button></div></form></div>
+<div class="toast" id="toast" role="status" hidden></div>
+<script>
+(function(){
+'use strict';
+var products=[],editingId=null,busy=false;
+var grid=document.getElementById('grid'),notice=document.getElementById('notice'),summary=document.getElementById('summary');
+var overlay=document.getElementById('overlay'),form=document.getElementById('form'),save=document.getElementById('save');
+var search=document.getElementById('search'),filter=document.getElementById('filter');
+function showToast(message){var t=document.getElementById('toast');t.textContent=message;t.hidden=false;clearTimeout(showToast.timer);showToast.timer=setTimeout(function(){t.hidden=true},3500)}
+function server(method,data){return new Promise(function(resolve,reject){var call=google.script.run.withSuccessHandler(resolve).withFailureHandler(reject);if(method==='list')call.listProducts();else call.saveProduct(data)})}
+function photoUrl(value){if(/^https:\/\/[^\s"'<>]+$/i.test(value||''))return value;if(/^[a-z0-9][a-z0-9._-]*\.(webp|png|jpe?g)$/i.test(value||''))return 'https://abdallrahimbirekdar-rgb.github.io/snack-point/'+value;return ''}
+function element(tag,className,text){var el=document.createElement(tag);if(className)el.className=className;if(text!==undefined)el.textContent=text;return el}
+function draw(){var q=search.value.trim().toLowerCase(),c=filter.value;var list=products.filter(function(p){return (!c||p.category===c)&&(!q||(p.name+' '+p.description).toLowerCase().includes(q))});summary.textContent=list.length+' منتج من أصل '+products.length;grid.replaceChildren();if(!list.length){grid.append(element('div','empty','لا توجد منتجات مطابقة.'));return}list.forEach(function(p){var card=element('article','card'+(p.visible?'':' off'));var art=element('div','photo');var url=photoUrl(p.image);if(url){var img=document.createElement('img');img.src=url;img.alt=p.name;img.loading='lazy';img.onerror=function(){art.replaceChildren(element('span','',p.emoji||'🛒'))};art.append(img)}else art.append(element('span','',p.emoji||'🛒'));card.append(art);
+var body=element('div','card-body');body.append(element('span','category',p.category+' · #'+p.id));body.append(element('h3','',p.name));body.append(element('p','desc',p.description||' '));body.append(element('div','price',Number(p.price).toLocaleString('en-US')+' ل.س'));body.append(element('span','status-pill',p.visible?'ظاهر في المتجر':'مخفي'));
+var actions=element('div','actions');var edit=element('button','','تعديل');edit.type='button';edit.onclick=function(){openForm(p)};var toggle=element('button',p.visible?'hide':'',p.visible?'إخفاء':'إظهار');toggle.type='button';toggle.onclick=function(){if(busy)return;busy=true;toggle.disabled=true;var next=Object.assign({},p,{visible:!p.visible});server('save',next).then(function(){showToast(next.visible?'ظهر المنتج في المتجر.':'أُخفي المنتج من المتجر.');load()}).catch(function(err){showToast('تعذّر الحفظ: '+err.message);busy=false;toggle.disabled=false})};actions.append(edit,toggle);body.append(actions);card.append(body);grid.append(card)})}
+function load(){notice.hidden=false;notice.className='notice';notice.textContent='جارٍ تحميل المنتجات…';server('list').then(function(data){products=Array.isArray(data)?data:[];busy=false;notice.hidden=true;draw()}).catch(function(err){busy=false;notice.hidden=false;notice.className='notice error';notice.textContent='تعذّر تحميل المنتجات: '+err.message})}
+function openForm(p){editingId=p?p.id:null;form.reset();form.elements.name.value=p?p.name:'';form.elements.category.value=p?p.category:'';form.elements.price.value=p?p.price:'';form.elements.description.value=p?p.description:'';form.elements.emoji.value=p?p.emoji:'';form.elements.image.value=p?p.image:'';form.elements.visible.checked=p?p.visible:true;document.getElementById('formTitle').textContent=p?'تعديل: '+p.name:'إضافة منتج';overlay.hidden=false;document.body.style.overflow='hidden';form.elements.name.focus()}
+function closeForm(){overlay.hidden=true;document.body.style.overflow=''}
+document.getElementById('add').onclick=function(){openForm(null)};document.getElementById('close').onclick=closeForm;document.getElementById('cancel').onclick=closeForm;overlay.addEventListener('click',function(e){if(e.target===overlay)closeForm()});
+search.addEventListener('input',draw);filter.addEventListener('change',draw);
+form.addEventListener('submit',function(e){e.preventDefault();if(busy)return;var data={id:editingId,name:form.elements.name.value,category:form.elements.category.value,price:form.elements.price.value,description:form.elements.description.value,emoji:form.elements.emoji.value,image:form.elements.image.value,visible:form.elements.visible.checked};busy=true;save.disabled=true;save.textContent='جارٍ الحفظ…';server('save',data).then(function(result){closeForm();showToast(result.message);load()}).catch(function(err){showToast('تعذّر الحفظ: '+err.message)}).finally(function(){busy=false;save.disabled=false;save.textContent='حفظ المنتج'})});
+load();
+})();
+</script>
+</body></html>
