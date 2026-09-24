@@ -102,3 +102,22 @@ $('orderForm').addEventListener('submit',e=>{e.preventDefault();if(!count())retu
 applyLanguage(lang);
 // Hero gallery: gentle automatic transitions, with manual controls.
 (()=>{const slides=[...document.querySelectorAll('.hero-slide')],dots=[...document.querySelectorAll('#slideDots button')],hero=document.querySelector('.hero-carousel');let active=0,timer;const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');function show(n){active=(n+slides.length)%slides.length;slides.forEach((slide,i)=>slide.classList.toggle('active',i===active));dots.forEach((dot,i)=>{dot.classList.toggle('active',i===active);if(i===active)dot.setAttribute('aria-current','true');else dot.removeAttribute('aria-current')})}function stop(){clearInterval(timer)}function start(){stop();if(!reduced.matches)timer=setInterval(()=>show(active+1),5500)}$('slidePrev').onclick=()=>{show(active-1);start()};$('slideNext').onclick=()=>{show(active+1);start()};dots.forEach((dot,i)=>dot.onclick=()=>{show(i);start()});hero.addEventListener('mouseenter',stop);hero.addEventListener('mouseleave',start);hero.addEventListener('focusin',stop);hero.addEventListener('focusout',e=>{if(!hero.contains(e.relatedTarget))start()});document.addEventListener('visibilitychange',()=>document.hidden?stop():start());reduced.addEventListener('change',start);start()})();
+
+// A single decorative confetti shower per page load.
+if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+ const layer=document.createElement('div');layer.className='confetti-layer';layer.setAttribute('aria-hidden','true');
+ const colors=['#e6b764','#f5df9f','#dd665d','#60a989','#f6f1e6','#7db5cf','#a884c7'];
+ for(let i=0;i<64;i++){
+  const piece=document.createElement('span');piece.className='confetti-piece';
+  piece.style.setProperty('--left',Math.random()*100+'%');
+  piece.style.setProperty('--width',7+Math.random()*8+'px');
+  piece.style.setProperty('--height',10+Math.random()*11+'px');
+  piece.style.setProperty('--color',colors[i%colors.length]);
+  piece.style.setProperty('--duration',3.3+Math.random()*1.2+'s');
+  piece.style.setProperty('--delay',Math.random()*1.25+'s');
+  piece.style.setProperty('--drift',(-85+Math.random()*170)+'px');
+  piece.style.setProperty('--spin',(-540+Math.random()*1080)+'deg');
+  layer.append(piece);
+ }
+ document.body.append(layer);setTimeout(()=>layer.remove(),6200);
+}
