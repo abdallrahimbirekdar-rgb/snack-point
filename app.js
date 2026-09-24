@@ -121,3 +121,27 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
  }
  document.body.append(layer);setTimeout(()=>layer.remove(),6200);
 }
+
+// Preview the hidden categories by scrolling each row once, then return.
+function previewCategoryRow(row,delay){
+ if(!row||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ let canceled=false,started=false;
+ const cancel=()=>{canceled=true};
+ row.addEventListener('pointerdown',cancel,{once:true});
+ row.addEventListener('wheel',cancel,{once:true,passive:true});
+ row.addEventListener('keydown',cancel,{once:true});
+ setTimeout(()=>{
+  if(canceled||started||row.scrollWidth-row.clientWidth<30)return;
+  started=true;
+  const extent=row.scrollWidth-row.clientWidth;
+  const direction=document.documentElement.dir==='rtl'?-1:1;
+  row.scrollTo({left:direction*extent,behavior:'smooth'});
+  setTimeout(()=>{if(!canceled)row.scrollTo({left:0,behavior:'smooth'})},2200);
+ },delay);
+}
+previewCategoryRow($('topCategories'),1500);
+const catalogRow=$('categories');
+if('IntersectionObserver'in window){
+ const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){observer.disconnect();previewCategoryRow(catalogRow,450)}},{threshold:.35});
+ observer.observe(catalogRow);
+}else previewCategoryRow(catalogRow,3200);
