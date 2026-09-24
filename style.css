@@ -45,7 +45,7 @@
 @media(prefers-reduced-motion:reduce){.category-quick-inner button,.catalog .tabs button{transition:none}}
 
 /* Gentle staggered pulse draws attention to the category buttons. */
-@keyframes categoryPulse{0%,72%,100%{transform:scale(1)}82%{transform:scale(1.065)}91%{transform:scale(.985)}}
+@keyframes categoryPulse{0%,72%,100%{transform:scale(1)}82%{transform:scale(1.14)}91%{transform:scale(.94)}}
 .category-quick-inner button,.catalog .tabs button{animation:categoryPulse 5.6s ease-in-out infinite;transform-origin:center}
 .category-quick-inner button:nth-child(2),.catalog .tabs button:nth-child(2){animation-delay:.35s}
 .category-quick-inner button:nth-child(3),.catalog .tabs button:nth-child(3){animation-delay:.7s}
@@ -54,5 +54,5 @@
 .category-quick-inner button:nth-child(6),.catalog .tabs button:nth-child(6){animation-delay:1.75s}
 .category-quick-inner button:nth-child(7),.catalog .tabs button:nth-child(7){animation-delay:2.1s}
 .category-quick-inner button:nth-child(8),.catalog .tabs button:nth-child(8){animation-delay:2.45s}
-.category-quick-inner button:hover,.category-quick-inner button:focus-visible,.catalog .tabs button:hover,.catalog .tabs button:focus-visible{animation-play-state:paused;transform:scale(1.065)}
+.category-quick-inner button:hover,.category-quick-inner button:focus-visible,.catalog .tabs button:hover,.catalog .tabs button:focus-visible{animation-play-state:paused;transform:scale(1.14)}
 @media(prefers-reduced-motion:reduce){.category-quick-inner button,.catalog .tabs button{animation:none}.category-quick-inner button:hover,.category-quick-inner button:focus-visible,.catalog .tabs button:hover,.catalog .tabs button:focus-visible{transform:none}}
