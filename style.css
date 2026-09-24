@@ -108,3 +108,11 @@
 .welcome-greeting{position:absolute;top:calc(100% + 17px);left:50%;transform:translateX(-50%);width:min(480px,calc(100vw - 32px));padding:14px 20px;border:2px solid #e3bf75;border-radius:18px;background:#0a302bed;color:#fff9e9;text-align:center;direction:rtl;font-family:Marhey,'IBM Plex Sans Arabic',sans-serif;font-size:24px;font-weight:600;line-height:1.6;box-shadow:0 16px 35px #001d1955;backdrop-filter:blur(7px)}
 .welcome-greeting strong{color:#ffd166;font-size:1.3em;font-weight:700;text-shadow:0 2px 12px #ffbd5066}
 @media(max-width:720px){.welcome-greeting{top:calc(100% + 13px);font-size:19px;padding:12px 15px;border-radius:14px}}
+
+/* Slightly denser product cards with readable prices and controls. */
+.catalog .products{grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.catalog .product-art{height:116px}
+.catalog .product-info{padding:13px 14px 14px}
+@media(max-width:1100px){.catalog .products{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:799px){.catalog .products{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:720px){.catalog .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.catalog .product-art{height:96px}.catalog .product-info{padding:10px}}
