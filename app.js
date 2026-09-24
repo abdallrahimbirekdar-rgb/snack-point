@@ -1,6 +1,6 @@
 const categoryKeys=['all','drinks','grocery','appetizers','sweets','cheese','spices','fruits'];
 // Paste the deployed Google Apps Script /exec URL here after connecting the Sheet.
-const SHEETS_WEB_APP_URL='https://script.google.com/macros/s/AKfycbwia94Qqb6j5vtjZ29XXAa98ruwxuWZ3-VBgW0yMzQK7W7uKz36sVisCjtU0--Zepeh/exec';
+const SHEETS_WEB_APP_URL='https://script.google.com/macros/s/AKfycbw2Qj3Ds207IFfjaapjvZo3N4QfI5NqvgsBCN0cvzifSlkcvJ34iGVU-oHB5Z_-wVwLhw/exec';
 function recordOrderInSheet(payload){
  if(!SHEETS_WEB_APP_URL)return;
  const body=new Blob([JSON.stringify(payload)],{type:'text/plain;charset=utf-8'});
