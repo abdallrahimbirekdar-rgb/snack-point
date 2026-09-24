@@ -19,7 +19,7 @@ function listProducts() {
   const last = sheet.getLastRow();
   if (last < 2) return [];
   return sheet.getRange(2, 1, Math.min(last - 1, 499), 8).getValues()
-    .filter(row => row[0] !== '' && row[2] !== '')
+    .filter(row => row[0] !== '' && row[0] !== null && String(row[2] || '').trim() !== '')
     .map(row => ({
       id: Number(row[0]), category: String(row[1] || ''),
       name: String(row[2] || ''), description: String(row[3] || ''),
@@ -54,13 +54,14 @@ function saveProduct(input) {
   try {
     const sheet = productSheet_();
     const last = sheet.getLastRow();
-    const ids = last > 1 ? sheet.getRange(2, 1, last - 1, 1).getValues()
-      .map(row => Number(row[0])) : [];
+    const idCells = last > 1 ? sheet.getRange(2, 1, last - 1, 1).getValues() : [];
+    const ids = idCells.map(row => row[0] === '' || row[0] === null ? null : Number(row[0]));
     let id, rowNumber;
     if (input.id === null || input.id === undefined || input.id === '') {
       id = Math.max(-1, ...ids.filter(Number.isFinite)) + 1;
-      rowNumber = last + 1;
-      if (rowNumber > 500) throw new Error('وصلت إلى الحد الأقصى للمنتجات.');
+      const emptyIndex = ids.indexOf(null);
+      rowNumber = emptyIndex >= 0 ? emptyIndex + 2 : last + 1;
+      if (rowNumber > sheet.getMaxRows()) sheet.insertRowsAfter(sheet.getMaxRows(), Math.max(100, rowNumber - sheet.getMaxRows()));
     } else {
       id = Number(input.id);
       if (!Number.isSafeInteger(id) || id < 0) throw new Error('رقم المنتج غير صالح.');
