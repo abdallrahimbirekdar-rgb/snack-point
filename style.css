@@ -63,3 +63,19 @@
 .category-quick-inner button,.catalog .tabs button{position:relative}
 .category-quick-inner button:hover,.category-quick-inner button:focus-visible,.catalog .tabs button:hover,.catalog .tabs button:focus-visible{z-index:2}
 @media(max-width:720px){.category-quick-inner{gap:16px;padding:22px 18px}.catalog .tabs{gap:16px;padding:22px 18px}}
+
+/* Darya eagle identity and a larger market name. */
+.site-header .header-inner{height:106px}
+.site-header .brand{font-size:38px;gap:15px;line-height:1.22}
+.site-header .brand small{font-size:17px;letter-spacing:2px;margin-top:3px}
+.brand-icon{overflow:hidden;flex:0 0 auto;padding:0}
+.site-header .brand-icon{width:73px;height:73px;border-radius:16px}
+.brand-icon img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+.footer-inner .brand-icon{width:46px;height:46px;border-radius:10px}
+@media(max-width:720px){
+ .site-header .header-inner{height:auto;min-height:0;flex-wrap:wrap;gap:7px;padding:10px 0}
+ .site-header .brand{width:100%;justify-content:center;font-size:29px;gap:10px}
+ .site-header .brand small{font-size:14px;margin-top:0}
+ .site-header .brand-icon{width:62px;height:62px;border-radius:13px}
+ .site-header .header-actions{width:100%;justify-content:space-between}
+}
