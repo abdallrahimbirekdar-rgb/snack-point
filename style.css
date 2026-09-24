@@ -58,8 +58,8 @@
 @media(prefers-reduced-motion:reduce){.category-quick-inner button,.catalog .tabs button{animation:none}.category-quick-inner button:hover,.category-quick-inner button:focus-visible,.catalog .tabs button:hover,.catalog .tabs button:focus-visible{transform:none}}
 
 /* Leave enough room for the full 200% pulse in both category rows. */
-.category-quick-inner{gap:38px;padding:48px 40px;scroll-padding-inline:40px}
-.catalog .tabs{gap:40px;padding:48px 40px;scroll-padding-inline:40px}
+.category-quick-inner{gap:18px;padding:24px 20px;scroll-padding-inline:20px}
+.catalog .tabs{gap:18px;padding:24px 20px;scroll-padding-inline:20px}
 .category-quick-inner button,.catalog .tabs button{position:relative}
 .category-quick-inner button:hover,.category-quick-inner button:focus-visible,.catalog .tabs button:hover,.catalog .tabs button:focus-visible{z-index:2}
-@media(max-width:720px){.category-quick-inner{gap:35px;padding:43px 34px}.catalog .tabs{gap:35px;padding:43px 34px}}
+@media(max-width:720px){.category-quick-inner{gap:16px;padding:22px 18px}.catalog .tabs{gap:16px;padding:22px 18px}}
