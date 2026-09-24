@@ -93,3 +93,9 @@
 /* Use one site-owned flag image rather than the device's emoji artwork. */
 .mascot-flag{display:block;width:90px;height:60px;object-fit:cover;right:-58px;top:16px;border-radius:3px;box-shadow:0 4px 10px #001d1977}
 @media(max-width:720px){.mascot-flag{width:76px;height:51px;right:-49px;top:11px}}
+
+/* One short burst of paper confetti when the page opens. */
+.confetti-layer{position:fixed;inset:0;z-index:60;overflow:hidden;pointer-events:none;contain:layout paint}
+.confetti-piece{position:absolute;top:-22px;left:var(--left);width:var(--width);height:var(--height);border-radius:2px;background:var(--color);opacity:0;will-change:transform;animation:confettiFall var(--duration) linear var(--delay) 1 both}
+@keyframes confettiFall{0%{opacity:0;transform:translate3d(0,-20px,0) rotate(0deg)}8%{opacity:1}90%{opacity:1}100%{opacity:0;transform:translate3d(var(--drift),110vh,0) rotate(var(--spin))}}
+@media(prefers-reduced-motion:reduce){.confetti-layer{display:none}.confetti-piece{animation:none}}
