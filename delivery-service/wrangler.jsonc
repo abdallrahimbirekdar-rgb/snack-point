@@ -1,0 +1,7 @@
+{
+ "name":"baladna-delivery",
+ "main":"worker.mjs",
+ "compatibility_date":"2026-09-30",
+ "vars":{"SITE_ORIGIN":"https://abdallrahimbirekdar-rgb.github.io"},
+ "d1_databases":[{"binding":"DB","database_name":"baladna-delivery","database_id":"REPLACE_WITH_DATABASE_ID"}]
+}
