@@ -12,13 +12,13 @@ public class MainActivity extends Activity {
  private WebView web; private ProgressBar progress; private LinearLayout error; private boolean failed;
  private final String home="https://abdallrahimbirekdar-rgb.github.io/snack-point/";
  @Override public void onCreate(Bundle state){super.onCreate(state);
- LinearLayout root=new LinearLayout(this); root.setOrientation(1);root.setBackgroundColor(Color.WHITE);
+ LinearLayout root=new LinearLayout(this); root.setOrientation(LinearLayout.VERTICAL);root.setBackgroundColor(Color.WHITE);
  if(android.os.Build.VERSION.SDK_INT>=35)root.setOnApplyWindowInsetsListener((v,i)->{android.graphics.Insets s=i.getInsets(android.view.WindowInsets.Type.systemBars());v.setPadding(s.left,s.top,s.right,s.bottom);return i;});
  LinearLayout bar=new LinearLayout(this);bar.setPadding(12,8,12,8);bar.setBackgroundColor(Color.rgb(10,58,48));
  TextView title=new TextView(this);title.setText("ماركت بلدنا");title.setTextColor(Color.WHITE);title.setTextSize(22);bar.addView(title,new LinearLayout.LayoutParams(0,-2,1));
  Button reload=new Button(this);reload.setText("تحديث");reload.setOnClickListener(v->web.reload());bar.addView(reload);root.addView(bar);
  progress=new ProgressBar(this,null,android.R.attr.progressBarStyleHorizontal);root.addView(progress,new LinearLayout.LayoutParams(-1,5));
- error=new LinearLayout(this);error.setOrientation(1);error.setPadding(24,36,24,24);TextView text=new TextView(this);text.setText("تعذّر فتح الموقع. تأكد من اتصال الإنترنت ثم حاول مجددًا.");text.setTextSize(20);error.addView(text);Button retry=new Button(this);retry.setText("إعادة المحاولة");retry.setOnClickListener(v->web.reload());error.addView(retry);error.setVisibility(View.GONE);root.addView(error);
+ error=new LinearLayout(this);error.setOrientation(LinearLayout.VERTICAL);error.setPadding(24,36,24,24);TextView text=new TextView(this);text.setText("تعذّر فتح الموقع. تأكد من اتصال الإنترنت ثم حاول مجددًا.");text.setTextSize(20);error.addView(text);Button retry=new Button(this);retry.setText("إعادة المحاولة");retry.setOnClickListener(v->web.reload());error.addView(retry);error.setVisibility(View.GONE);root.addView(error);
  web=new WebView(this);root.addView(web,new LinearLayout.LayoutParams(-1,0,1));setContentView(root);
  WebSettings s=web.getSettings();s.setJavaScriptEnabled(true);s.setDomStorageEnabled(true);s.setAllowFileAccess(false);s.setAllowContentAccess(false);s.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
  web.setWebChromeClient(new WebChromeClient(){public void onProgressChanged(WebView w,int n){progress.setProgress(n);progress.setVisibility(n==100?View.GONE:View.VISIBLE);}});
