@@ -2,6 +2,11 @@ export async function hash(value) {
  const bytes = await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value));
  return Array.from(new Uint8Array(bytes),b=>b.toString(16).padStart(2,'0')).join('');
 }
+async function courierKey(secret,id) {
+ const material=await crypto.subtle.importKey('raw',new TextEncoder().encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);
+ const bytes=new Uint8Array(await crypto.subtle.sign('HMAC',material,new TextEncoder().encode('baladna-courier-v2:'+id)));
+ return Array.from(bytes.slice(0,10),b=>b.toString(16).padStart(2,'0')).join('').match(/.{4}/g).join('-');
+}
 export default {async fetch(request,env) {
  const origin=request.headers.get('Origin');
  const headers={'Content-Type':'application/json','Cache-Control':'no-store','Vary':'Origin'};
@@ -28,9 +33,19 @@ export default {async fetch(request,env) {
    if(path==='/admin/couriers'&&request.method==='GET')return reply({couriers:(await env.DB.prepare('SELECT id,name,active FROM couriers').all()).results});
    if(path==='/admin/couriers'&&request.method==='POST') {
     if(typeof data.name!=='string'||!data.name.trim()||data.name.length>80)fail('Invalid name');
-    const id=crypto.randomUUID(),key=crypto.randomUUID()+crypto.randomUUID();
+    const id=crypto.randomUUID(),key=await courierKey(env.OWNER_SECRET,id);
     await env.DB.prepare('INSERT INTO couriers(id,name,token_hash) VALUES(?,?,?)').bind(id,data.name.trim(),await hash(key)).run();
     return reply({id,name:data.name.trim(),key},201);
+   }
+   if(path==='/admin/key'&&request.method==='POST') {
+    const courier=await env.DB.prepare('SELECT id,name,token_hash FROM couriers WHERE id=? AND active=1').bind(String(data.id)).first();
+    if(!courier)fail('Courier not found',404);
+    const key=await courierKey(env.OWNER_SECRET,courier.id);
+    if(await hash(key)!==courier.token_hash) {
+     if(data.replace!==true) return reply({legacy:true});
+     await env.DB.prepare('UPDATE couriers SET token_hash=? WHERE id=? AND active=1').bind(await hash(key),courier.id).run();
+    }
+    return reply({key,name:courier.name});
    }
    if(path==='/admin/revoke'&&request.method==='POST') {
     await env.DB.batch([
