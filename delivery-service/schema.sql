@@ -8,3 +8,7 @@ CREATE TABLE IF NOT EXISTS orders (
  expires INTEGER NOT NULL
 );
 CREATE INDEX IF NOT EXISTS courier_orders ON orders(courier_id, status);
+
+CREATE TABLE IF NOT EXISTS order_details (id TEXT PRIMARY KEY, details TEXT NOT NULL, estimate TEXT, subscription TEXT, notified INTEGER DEFAULT 0);
+CREATE TABLE IF NOT EXISTS shop_settings (id TEXT PRIMARY KEY, value TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS service_keys (id TEXT PRIMARY KEY, value TEXT NOT NULL);

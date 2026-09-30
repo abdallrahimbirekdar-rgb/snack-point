@@ -1,7 +1,7 @@
 (()=>{'use strict';
  const $=id=>document.getElementById(id),api=(window.BALADNA_DELIVERY_API||'').replace(/\/$/,'');
  const token=new URLSearchParams(location.hash.slice(1)).get('token');
- const states={preparing:'جارٍ تجهيز طلبك',out_for_delivery:'طلبك في الطريق',arrived:'وصل المندوب',delivered:'تم تسليم الطلب'};
+ const states={new:'وصل الطلب للماركت — بانتظار القبول',cancelled:'تم رفض الطلب؛ تواصل مع الماركت',preparing:'جارٍ تجهيز طلبك',out_for_delivery:'طلبك في الطريق',arrived:'وصل المندوب',delivered:'تم تسليم الطلب'};
  let timer,lastPosition='',lastData=null;
  function freshness(){if(!lastData)return;const p=lastData.location;const age=p?Math.max(0,Math.floor((Date.now()-p.updated)/1000)):0;$('freshness').textContent=p?(age>60?'الموقع غير محدث — آخر تحديث منذ '+Math.floor(age/60)+' دقيقة':'آخر تحديث للموقع منذ '+age+' ثانية'):(lastData.status==='out_for_delivery'?'بانتظار إرسال موقع المندوب…':'سيظهر الموقع أثناء التوصيل.');}
  if(!api){$('notice').textContent='خدمة التتبّع لم تُفعّل بعد. تواصل مع الماركت لمعرفة حالة طلبك.';return}
@@ -9,12 +9,14 @@
  async function poll(){clearTimeout(timer);if(document.hidden)return;
   try{const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),10000);let response;try{response=await fetch(api+'/track',{headers:{Authorization:'Bearer '+token},cache:'no-store',signal:controller.signal})}finally{clearTimeout(timeout)}
    if(!response.ok)throw new Error(response.status===404?'لم يؤكد الماركت الطلب بعد، أو انتهت صلاحية الرابط.':'تعذّر تحديث التتبّع. سنحاول مجددًا.');
-   const data=await response.json();lastData=data;$('details').hidden=false;$('notice').hidden=true;$('order').textContent='طلب '+data.id;$('status').textContent=states[data.status]||'بانتظار تحديث الحالة';$('arrival').hidden=data.status!=='arrived';freshness();
+   const data=await response.json();lastData=data;$('details').hidden=false;$('notice').hidden=true;$('order').textContent='طلب '+data.id;$('status').textContent=states[data.status]||'بانتظار تحديث الحالة';$('arrival').hidden=data.status!=='arrived';freshness();$('estimate').textContent=data.estimate|| (data.eta?'الوقت المتوقع بعد التأكيد: '+data.eta.min+'–'+data.eta.max+' دقيقة':'');
    $('map').hidden=!data.location;$('accuracy').textContent='';
    if(data.location){const p=data.location,key=p.lat.toFixed(4)+','+p.lng.toFixed(4);if(key!==lastPosition){const box=[p.lng-.008,p.lat-.008,p.lng+.008,p.lat+.008].join(',');$('map').src='https://www.openstreetmap.org/export/embed.html?bbox='+encodeURIComponent(box)+'&layer=mapnik&marker='+encodeURIComponent(p.lat+','+p.lng);lastPosition=key}$('accuracy').textContent='دقة الموقع التقريبية: '+Math.round(p.accuracy)+' متر';}
-   if(data.status==='delivered')return;
+   if(['delivered','cancelled'].includes(data.status))return;
   }catch(error){$('notice').hidden=false;$('notice').textContent=error.message; if(lastData){lastData.location=null;$('map').hidden=true;$('freshness').textContent='انقطع التحديث؛ الحالة المعروضة هي آخر حالة وصلتنا.'}}
   timer=setTimeout(poll,15000);
  }
  document.addEventListener('visibilitychange',()=>{clearTimeout(timer);if(!document.hidden)poll()});setInterval(freshness,1000);poll();
+$('notifyArrival').onclick=async()=>{const btn=$('notifyArrival');btn.disabled=true;try{if(!('serviceWorker'in navigator)||!('PushManager'in window)||!('Notification'in window))throw Error('هذه الميزة تحتاج متصفحًا يدعم الإشعارات. افتح رابط الطلب في Chrome خارج التطبيق.');const permission=await Notification.requestPermission();if(permission!=='granted')throw Error('لم تسمح بالإشعارات. يمكنك متابعة الطلب من الصفحة.');const r=await fetch(api+'/push/public-key');if(!r.ok)throw Error('خدمة الإشعارات غير مفعلة بعد.');const publicKey=(await r.json()).key;const raw=Uint8Array.from(atob(publicKey.replace(/-/g,'+').replace(/_/g,'/')+'='.repeat((4-publicKey.length%4)%4)),c=>c.charCodeAt(0));await navigator.serviceWorker.register('notification-sw.js');const reg=await navigator.serviceWorker.ready;let sub=await reg.pushManager.getSubscription();if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:raw});const save=await fetch(api+'/subscribe',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({subscription:sub.toJSON()})});if(!save.ok)throw Error('تعذّر حفظ اشتراك الطلب.');reg.active?.postMessage({type:'order-link',id:new URLSearchParams(location.hash.slice(1)).get('order'),url:location.href});$('notificationHelp').textContent='فعّلت إشعار الوصول لهذا الطلب. التسليم يعتمد على اتصال الهاتف وإعدادات المتصفح.';}catch(e){$('notificationHelp').textContent=e.message;if(/Chrome/.test(e.message)){const a=document.createElement('a');const u=new URL(location.href);u.searchParams.set('external','1');a.href=u.href;a.textContent='فتح رابط التتبع في المتصفح';$('notificationHelp').append(document.createElement('br'),a);}}finally{btn.disabled=false}};
+
 })();

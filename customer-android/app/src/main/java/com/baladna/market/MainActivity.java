@@ -32,8 +32,9 @@ public class MainActivity extends Activity {
  }
  public void onGeolocationPermissionsHidePrompt(){finishLocation(false);}
 public void onProgressChanged(WebView w,int n){progress.setProgress(n);progress.setVisibility(n==100?View.GONE:View.VISIBLE);}});
+ web.setDownloadListener((url,userAgent,contentDisposition,mimetype,length)->{Uri u=Uri.parse(url);if("https".equals(u.getScheme())){try{startActivity(new Intent(Intent.ACTION_VIEW,u));}catch(Exception e){Toast.makeText(this,"افتح الموقع في المتصفح لتنزيل الملف",Toast.LENGTH_LONG).show();}}});
  web.setWebViewClient(new WebViewClient(){
- public boolean shouldOverrideUrlLoading(WebView w,WebResourceRequest r){if(!r.isForMainFrame())return false;Uri u=r.getUrl();if("https".equals(u.getScheme())&&"abdallrahimbirekdar-rgb.github.io".equals(u.getHost())&&u.getPath()!=null&&u.getPath().startsWith("/snack-point/"))return false;
+ public boolean shouldOverrideUrlLoading(WebView w,WebResourceRequest r){if(!r.isForMainFrame())return false;Uri u=r.getUrl();if("https".equals(u.getScheme())&&"abdallrahimbirekdar-rgb.github.io".equals(u.getHost())&&"1".equals(u.getQueryParameter("external"))){try{startActivity(new Intent(Intent.ACTION_VIEW,u));}catch(Exception e){Toast.makeText(MainActivity.this,"افتح رابط التتبع في Chrome لتفعيل الإشعارات",Toast.LENGTH_LONG).show();}return true;}if("https".equals(u.getScheme())&&"abdallrahimbirekdar-rgb.github.io".equals(u.getHost())&&u.getPath()!=null&&u.getPath().startsWith("/snack-point/"))return false;
  if("https".equals(u.getScheme())||"http".equals(u.getScheme())||"whatsapp".equals(u.getScheme())||"tel".equals(u.getScheme())||"mailto".equals(u.getScheme())){try{startActivity(new Intent(Intent.ACTION_VIEW,u));}catch(Exception e){Toast.makeText(MainActivity.this,"لا يوجد تطبيق لفتح هذا الرابط",Toast.LENGTH_LONG).show();}}return true;}
  public void onPageStarted(WebView w,String u,android.graphics.Bitmap b){failed=false;error.setVisibility(View.GONE);web.setVisibility(View.VISIBLE);}
  public void onReceivedError(WebView w,WebResourceRequest r,WebResourceError e){if(r.isForMainFrame()){failed=true;error.setVisibility(View.VISIBLE);web.setVisibility(View.GONE);}}
