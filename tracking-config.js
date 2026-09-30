@@ -1,2 +1,2 @@
-// Set this to the deployed delivery Worker HTTPS URL. No secrets belong here.
-window.BALADNA_DELIVERY_API = '';
+// Public delivery service URL. No secrets belong here.
+window.BALADNA_DELIVERY_API = 'https://baladna-delivery.abdallrahim-birekdar.workers.dev';
