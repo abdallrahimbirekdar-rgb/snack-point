@@ -10,6 +10,7 @@ import android.view.View;
 
 public class MainActivity extends Activity {
  private WebView web; private ProgressBar progress; private LinearLayout error; private boolean failed;
+ private GeolocationPermissions.Callback locationCallback; private String locationOrigin;
  private final String home="https://abdallrahimbirekdar-rgb.github.io/snack-point/";
  @Override public void onCreate(Bundle state){super.onCreate(state);
  LinearLayout root=new LinearLayout(this); root.setOrientation(LinearLayout.VERTICAL);root.setBackgroundColor(Color.WHITE);
@@ -20,8 +21,17 @@ public class MainActivity extends Activity {
  progress=new ProgressBar(this,null,android.R.attr.progressBarStyleHorizontal);root.addView(progress,new LinearLayout.LayoutParams(-1,5));
  error=new LinearLayout(this);error.setOrientation(LinearLayout.VERTICAL);error.setPadding(24,36,24,24);TextView text=new TextView(this);text.setText("تعذّر فتح الموقع. تأكد من اتصال الإنترنت ثم حاول مجددًا.");text.setTextSize(20);error.addView(text);Button retry=new Button(this);retry.setText("إعادة المحاولة");retry.setOnClickListener(v->web.reload());error.addView(retry);error.setVisibility(View.GONE);root.addView(error);
  web=new WebView(this);root.addView(web,new LinearLayout.LayoutParams(-1,0,1));setContentView(root);
- WebSettings s=web.getSettings();s.setJavaScriptEnabled(true);s.setDomStorageEnabled(true);s.setAllowFileAccess(false);s.setAllowContentAccess(false);s.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
- web.setWebChromeClient(new WebChromeClient(){public void onProgressChanged(WebView w,int n){progress.setProgress(n);progress.setVisibility(n==100?View.GONE:View.VISIBLE);}});
+ WebSettings s=web.getSettings();s.setJavaScriptEnabled(true);s.setDomStorageEnabled(true);s.setGeolocationEnabled(true);s.setAllowFileAccess(false);s.setAllowContentAccess(false);s.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
+ web.setWebChromeClient(new WebChromeClient(){
+ public void onGeolocationPermissionsShowPrompt(String origin,GeolocationPermissions.Callback callback){
+ Uri requested=Uri.parse(origin),current=Uri.parse(web.getUrl()==null?"":web.getUrl());
+ if(!"https".equals(requested.getScheme())||!"abdallrahimbirekdar-rgb.github.io".equals(requested.getHost())||!"abdallrahimbirekdar-rgb.github.io".equals(current.getHost())||current.getPath()==null||!current.getPath().startsWith("/snack-point/")){callback.invoke(origin,false,false);return;}
+ if(checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)==android.content.pm.PackageManager.PERMISSION_GRANTED){callback.invoke(origin,true,false);return;}
+ if(locationCallback!=null){callback.invoke(origin,false,false);return;}locationCallback=callback;locationOrigin=origin;
+ requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,android.Manifest.permission.ACCESS_COARSE_LOCATION},44);
+ }
+ public void onGeolocationPermissionsHidePrompt(){finishLocation(false);}
+public void onProgressChanged(WebView w,int n){progress.setProgress(n);progress.setVisibility(n==100?View.GONE:View.VISIBLE);}});
  web.setWebViewClient(new WebViewClient(){
  public boolean shouldOverrideUrlLoading(WebView w,WebResourceRequest r){if(!r.isForMainFrame())return false;Uri u=r.getUrl();if("https".equals(u.getScheme())&&"abdallrahimbirekdar-rgb.github.io".equals(u.getHost())&&u.getPath()!=null&&u.getPath().startsWith("/snack-point/"))return false;
  if("https".equals(u.getScheme())||"http".equals(u.getScheme())||"whatsapp".equals(u.getScheme())||"tel".equals(u.getScheme())||"mailto".equals(u.getScheme())){try{startActivity(new Intent(Intent.ACTION_VIEW,u));}catch(Exception e){Toast.makeText(MainActivity.this,"لا يوجد تطبيق لفتح هذا الرابط",Toast.LENGTH_LONG).show();}}return true;}
@@ -30,7 +40,9 @@ public class MainActivity extends Activity {
  public void onReceivedHttpError(WebView w,WebResourceRequest r,WebResourceResponse e){if(r.isForMainFrame()&&e.getStatusCode()>=400){failed=true;error.setVisibility(View.VISIBLE);web.setVisibility(View.GONE);}}
  });if(state==null||web.restoreState(state)==null)web.loadUrl(home);
  }
+ private void finishLocation(boolean allowed){if(locationCallback!=null){GeolocationPermissions.Callback callback=locationCallback;String origin=locationOrigin;locationCallback=null;locationOrigin=null;callback.invoke(origin,allowed,false);}}
+ @Override public void onRequestPermissionsResult(int code,String[] permissions,int[] results){super.onRequestPermissionsResult(code,permissions,results);if(code==44){boolean allowed=checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)==android.content.pm.PackageManager.PERMISSION_GRANTED||checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION)==android.content.pm.PackageManager.PERMISSION_GRANTED;finishLocation(allowed);if(!allowed)Toast.makeText(this,"لم يُسمح بالموقع. يمكنك كتابة عنوانك أو السماح بالموقع من إعدادات التطبيق.",Toast.LENGTH_LONG).show();}}
  @Override public void onSaveInstanceState(Bundle b){web.saveState(b);super.onSaveInstanceState(b);}
  @Override public void onBackPressed(){if(web.canGoBack())web.goBack();else super.onBackPressed();}
- @Override public void onDestroy(){web.destroy();super.onDestroy();}
+ @Override public void onDestroy(){finishLocation(false);web.destroy();super.onDestroy();}
 }
