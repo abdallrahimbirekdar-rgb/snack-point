@@ -1,15 +1,19 @@
-name: Build courier Android APK
+name: Build Baladna Android apps
 on:
  workflow_dispatch:
  push:
   paths:
    - 'courier-android/**'
+   - 'customer-android/**'
    - '.github/workflows/android-build.yml'
 permissions:
  contents: read
 jobs:
  build:
   runs-on: ubuntu-latest
+  strategy:
+   matrix:
+    app: [courier, customer]
   steps:
    - uses: actions/checkout@v4
    - uses: actions/setup-java@v4
@@ -25,10 +29,10 @@ jobs:
       gradle-version: '8.11.1'
    - name: Install Android SDK
      run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
-   - name: Build test APK
-     working-directory: courier-android
-     run: gradle assembleDebug
+   - name: Build and lint test APK
+     working-directory: ${{ matrix.app }}-android
+     run: gradle assembleDebug lintDebug
    - uses: actions/upload-artifact@v4
      with:
-      name: baladna-courier-test-apk
-      path: courier-android/app/build/outputs/apk/debug/app-debug.apk
+      name: baladna-${{ matrix.app }}-test-apk
+      path: ${{ matrix.app }}-android/app/build/outputs/apk/debug/app-debug.apk
