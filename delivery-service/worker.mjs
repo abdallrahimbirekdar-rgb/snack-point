@@ -116,8 +116,10 @@ export default {async fetch(request,env,ctx){
  const token=(request.headers.get('Authorization')||'').replace(/^Bearer /,'');const owner=path.startsWith('/admin/');
  if(owner&&(!token||await hash(token)!==await hash(env.OWNER_SECRET)))return reply({error:'Unauthorized'},401);
  if(owner)await setup(env.DB);
- let d={};if(request.method==='POST'&&(path==='/orders'||path==='/subscribe'||['/admin/settings','/admin/decision','/admin/estimate','/admin/assign'].includes(path))){const text=await request.text();if(text.length>16000)return reply({error:'الطلب كبير جدًا'},413);d=JSON.parse(text);}
+ let d={};if(request.method==='POST'&&(path==='/orders'||path==='/subscribe'||['/admin/settings','/admin/decision','/admin/estimate','/admin/assign','/admin/remove'].includes(path))){const text=await request.text();if(text.length>16000)return reply({error:'الطلب كبير جدًا'},413);d=JSON.parse(text);}
  if(path==='/settings'&&request.method==='GET'){const s=await settings(env.DB);return reply({...s,openNow:isOpen(s)});}
+ if(path==='/admin/couriers'&&request.method==='GET')return reply({couriers:(await env.DB.prepare("SELECT c.id,c.name,c.active FROM couriers c WHERE NOT EXISTS (SELECT 1 FROM service_keys k WHERE k.id='archived-courier:'||c.id)").all()).results});
+ if(path==='/admin/remove'&&request.method==='POST'){const c=await env.DB.prepare('SELECT id,active FROM couriers WHERE id=?').bind(String(d.id)).first();if(!c)return reply({error:'المندوب غير موجود'},404);if(c.active)return reply({error:'أوقف المندوب أولًا قبل حذفه من القائمة'},409);await env.DB.prepare("INSERT OR IGNORE INTO service_keys(id,value) VALUES(?, '1')").bind('archived-courier:'+c.id).run();return reply({ok:true});}
  if(path==='/admin/catalog'&&request.method==='GET')return reply({products:await catalog()});
  if(path==='/admin/settings'){
   if(request.method==='POST'){const s=cleanSettings(d);await env.DB.prepare("INSERT INTO shop_settings(id,value) VALUES('shop',?) ON CONFLICT(id) DO UPDATE SET value=excluded.value").bind(JSON.stringify(s)).run();return reply({ok:true});}
